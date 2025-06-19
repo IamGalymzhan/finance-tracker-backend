@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.galymzhan</groupId>
-    <artifactId>expense-tracker-backend</artifactId>
+    <artifactId>finance-tracker-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>expense-tracker-backend</name>
-    <description>expense-tracker-backend</description>
+    <name>finance-tracker-backend</name>
+    <description>finance-tracker-backend</description>
     <url/>
     <licenses>
         <license/>

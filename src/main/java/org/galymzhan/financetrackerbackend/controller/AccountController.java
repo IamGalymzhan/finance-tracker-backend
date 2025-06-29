@@ -1,5 +1,6 @@
 package org.galymzhan.financetrackerbackend.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.galymzhan.financetrackerbackend.dto.AccountRequestDto;
 import org.galymzhan.financetrackerbackend.dto.AccountResponseDto;
@@ -18,23 +19,23 @@ public class AccountController {
     private final AccountService accountService;
 
     @GetMapping
-    public List<AccountResponseDto> getAll() {
-        return accountService.getAllAccounts();
+    public ResponseEntity<List<AccountResponseDto>> getAll() {
+        return ResponseEntity.ok(accountService.getAllAccounts());
     }
 
     @GetMapping("/{id}")
-    public AccountResponseDto getById(@PathVariable Long id) {
-        return accountService.getAccountById(id);
+    public ResponseEntity<AccountResponseDto> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(accountService.getAccountById(id));
     }
 
     @PostMapping
-    public ResponseEntity<AccountResponseDto> create(@RequestBody AccountRequestDto dto) {
+    public ResponseEntity<AccountResponseDto> create(@Valid @RequestBody AccountRequestDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(accountService.create(dto));
     }
 
     @PatchMapping("/{id}")
-    public AccountResponseDto update(@PathVariable Long id, @RequestBody AccountRequestDto dto) {
-        return accountService.update(id, dto);
+    public ResponseEntity<AccountResponseDto> update(@PathVariable Long id, @Valid @RequestBody AccountRequestDto dto) {
+        return ResponseEntity.ok(accountService.update(id, dto));
     }
 
     @DeleteMapping("/{id}")

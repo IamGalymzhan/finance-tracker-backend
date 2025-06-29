@@ -1,16 +1,19 @@
 package org.galymzhan.financetrackerbackend.dto;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.Value;
 
-@Getter
-@Setter
+@Value
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class UserProfileResponseDto {
-    private Long id;
 
-    private String username;
+    @JsonProperty("id")
+    Long id;
 
-    private String email;
+    @JsonProperty("username")
+    String username;
+
+    @JsonProperty("email")
+    String email;
 }

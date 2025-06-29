@@ -1,28 +1,32 @@
 package org.galymzhan.financetrackerbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Value;
 
 import java.math.BigDecimal;
 
+@Value
 @Builder
-@Getter
-@Setter
 public class AccountRequestDto {
+
+    @NotBlank(message = "Account name is required")
     @JsonProperty("name")
-    private String name;
+    String name;
 
+    @NotBlank(message = "Account type is required")
     @JsonProperty("accountType")
-    private String accountType;
+    String accountType;
 
+    @NotNull(message = "Balance is required")
     @JsonProperty("balance")
-    private BigDecimal balance;
+    BigDecimal balance;
 
     @JsonProperty("color")
-    private String color;
+    String color;
 
     @JsonProperty("icon")
-    private String icon;
+    String icon;
 }

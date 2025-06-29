@@ -16,13 +16,13 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/me")
-    public ResponseEntity<?> getUserProfile() {
+    public ResponseEntity<UserProfileResponseDto> getUserProfile() {
         UserProfileResponseDto dto = userService.getCurrentUserProfile();
         return ResponseEntity.ok(dto);
     }
 
     @PatchMapping("/me")
-    public ResponseEntity<?> updateUserProfile(@Valid @RequestBody UserProfileUpdateDto updateDto) {
+    public ResponseEntity<UserProfileResponseDto> updateUserProfile(@Valid @RequestBody UserProfileUpdateDto updateDto) {
         UserProfileResponseDto dto = userService.updateCurrentUserProfile(updateDto);
         return ResponseEntity.ok(dto);
     }

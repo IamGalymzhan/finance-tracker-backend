@@ -2,16 +2,14 @@ package org.galymzhan.financetrackerbackend.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.galymzhan.financetrackerbackend.entity.base.BaseEntityAudit;
 
 import java.math.BigDecimal;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,6 +20,10 @@ public class Category extends BaseEntityAudit {
     @JoinColumn(name = "user_id")
     @NotNull
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private Category parentCategory;
 
     @Column(nullable = false)
     @NotBlank
@@ -40,10 +42,6 @@ public class Category extends BaseEntityAudit {
     @Column
     @DecimalMin(value = "0.01", message = "Target amount must be greater than 0")
     private BigDecimal targetAmount;
-
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    private Category parentCategory;
 
     @Column(nullable = false)
     @NotBlank

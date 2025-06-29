@@ -7,7 +7,8 @@ import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-    UserProfileResponseDto toProfileResponseDto(User user);
+
+    UserProfileResponseDto toResponseDto(User user);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
@@ -15,5 +16,5 @@ public interface UserMapper {
     @Mapping(target = "role", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    void updateUserProfile(@MappingTarget User user, UserProfileUpdateDto dto);
+    void updateEntity(@MappingTarget User user, UserProfileUpdateDto dto);
 }

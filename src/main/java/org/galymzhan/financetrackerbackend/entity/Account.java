@@ -16,7 +16,9 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "accounts")
+@Table(name = "accounts", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "name"})
+})
 public class Account extends BaseEntityAudit {
 
     @ManyToOne(optional = false)

@@ -1,11 +1,11 @@
 package org.galymzhan.financetrackerbackend.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 import org.galymzhan.financetrackerbackend.entity.base.BaseEntityAudit;
 
 import java.math.BigDecimal;
@@ -14,6 +14,7 @@ import java.util.Set;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,6 +26,11 @@ public class Operation extends BaseEntityAudit {
     @NotNull
     private User user;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "category_id")
+    @NotNull
+    private Category category;
+    
     @Column(nullable = false)
     @NotBlank
     @Size(min = 1, max = 200, message = "Operation name must be between 1 and 200 characters")
@@ -34,11 +40,6 @@ public class Operation extends BaseEntityAudit {
     @Column(nullable = false)
     @NotNull
     private OperationType operationType;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "category_id")
-    @NotNull
-    private Category category;
 
     @Column(nullable = false)
     @NotNull

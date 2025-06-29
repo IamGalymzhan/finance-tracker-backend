@@ -2,16 +2,15 @@ package org.galymzhan.financetrackerbackend.dto.authentication;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Value;
 
+@Value
 @Builder
-@Getter
 public class AuthenticationDto {
 
     @JsonProperty("token")
-    private String token;
+    String token;
 
     @JsonProperty("role")
-    private String role;
-
+    String role;
 }

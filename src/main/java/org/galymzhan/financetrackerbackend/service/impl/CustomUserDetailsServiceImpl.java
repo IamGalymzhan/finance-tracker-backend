@@ -1,5 +1,6 @@
 package org.galymzhan.financetrackerbackend.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.galymzhan.financetrackerbackend.entity.User;
 import org.galymzhan.financetrackerbackend.exceptions.UsernameAlreadyExistsException;
@@ -21,11 +22,12 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
     }
 
     @Override
+    @Transactional
     public User create(User user) throws UsernameAlreadyExistsException {
         var opt = userRepository.findByUsername(user.getUsername());
         if (opt.isPresent()) {
             throw new UsernameAlreadyExistsException(
-                    "Пользователь с таким номером телефона уже существует"
+                    "User with this username already exists"
             );
         }
         return userRepository.save(user);

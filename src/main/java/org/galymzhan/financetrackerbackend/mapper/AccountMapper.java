@@ -11,10 +11,10 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring")
 public interface AccountMapper {
 
-    AccountResponseDto toDto(Account account);
+    AccountResponseDto toResponseDto(Account account);
 
     Account toEntity(AccountRequestDto dto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void update(@MappingTarget Account account, AccountRequestDto dto);
+    void updateEntity(@MappingTarget Account account, AccountRequestDto dto);
 }

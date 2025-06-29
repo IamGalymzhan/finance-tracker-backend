@@ -6,6 +6,7 @@ import org.galymzhan.financetrackerbackend.dto.authentication.LoginDto;
 import org.galymzhan.financetrackerbackend.dto.authentication.RegisterDto;
 import org.galymzhan.financetrackerbackend.entity.Role;
 import org.galymzhan.financetrackerbackend.entity.User;
+import org.galymzhan.financetrackerbackend.exceptions.AuthenticationException;
 import org.galymzhan.financetrackerbackend.exceptions.UsernameAlreadyExistsException;
 import org.galymzhan.financetrackerbackend.service.AuthenticationService;
 import org.galymzhan.financetrackerbackend.service.CustomUserDetailsService;
@@ -68,6 +69,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (authentication != null && authentication.getPrincipal() instanceof User) {
             return (User) authentication.getPrincipal();
         }
-        throw new RuntimeException("No authenticated user found");
+        throw new AuthenticationException("No authenticated user found");
     }
 }

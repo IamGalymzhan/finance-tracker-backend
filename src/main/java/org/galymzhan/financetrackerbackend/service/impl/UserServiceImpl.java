@@ -1,5 +1,6 @@
 package org.galymzhan.financetrackerbackend.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.galymzhan.financetrackerbackend.dto.UserProfileResponseDto;
 import org.galymzhan.financetrackerbackend.dto.UserProfileUpdateDto;
@@ -22,14 +23,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserProfileResponseDto getCurrentUserProfile() {
         User user = authenticationService.getCurrentUser();
-        return userMapper.toProfileResponseDto(user);
+        return userMapper.toResponseDto(user);
     }
 
     @Override
+    @Transactional
     public UserProfileResponseDto updateCurrentUserProfile(UserProfileUpdateDto userProfileUpdateDto) throws NotFoundException {
         User user = authenticationService.getCurrentUser();
-        userMapper.updateUserProfile(user, userProfileUpdateDto);
+        userMapper.updateEntity(user, userProfileUpdateDto);
         User updatedUser = userRepository.save(user);
-        return userMapper.toProfileResponseDto(updatedUser);
+        return userMapper.toResponseDto(updatedUser);
     }
 }

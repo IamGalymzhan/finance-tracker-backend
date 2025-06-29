@@ -1,5 +1,6 @@
 package org.galymzhan.financetrackerbackend.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.galymzhan.financetrackerbackend.dto.AccountRequestDto;
 import org.galymzhan.financetrackerbackend.dto.AccountResponseDto;
@@ -26,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
     public List<AccountResponseDto> getAllAccounts() {
         User user = authenticationService.getCurrentUser();
         return accountRepository.findAllByUser(user).stream()
-                .map(accountMapper::toDto)
+                .map(accountMapper::toResponseDto)
                 .toList();
     }
 
@@ -35,28 +36,31 @@ public class AccountServiceImpl implements AccountService {
         User user = authenticationService.getCurrentUser();
         Account account = accountRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new NotFoundException("Account not found"));
-        return accountMapper.toDto(account);
+        return accountMapper.toResponseDto(account);
     }
 
     @Override
+    @Transactional
     public AccountResponseDto create(AccountRequestDto accountRequestDto) throws NotFoundException {
         Account account = accountMapper.toEntity(accountRequestDto);
         account.setUser(authenticationService.getCurrentUser());
         Account savedAccount = accountRepository.save(account);
-        return accountMapper.toDto(savedAccount);
+        return accountMapper.toResponseDto(savedAccount);
     }
 
     @Override
+    @Transactional
     public AccountResponseDto update(Long id, AccountRequestDto accountRequestDto) throws NotFoundException {
         User user = authenticationService.getCurrentUser();
         Account account = accountRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new NotFoundException("Account not found"));
-        accountMapper.update(account, accountRequestDto);
+        accountMapper.updateEntity(account, accountRequestDto);
         Account updatedAccount = accountRepository.save(account);
-        return accountMapper.toDto(accountRepository.save(updatedAccount));
+        return accountMapper.toResponseDto(updatedAccount);
     }
 
     @Override
+    @Transactional
     public void delete(Long id) throws NotFoundException {
         User user = authenticationService.getCurrentUser();
         Account account = accountRepository.findByIdAndUser(id, user)

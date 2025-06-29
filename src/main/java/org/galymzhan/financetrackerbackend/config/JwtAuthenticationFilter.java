@@ -1,6 +1,5 @@
 package org.galymzhan.financetrackerbackend.config;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain) throws ServletException, IOException {
         var authHeader = request.getHeader(HEADER_NAME);
 
-        if (!StringUtils.hasLength(authHeader)|| !StringUtils.startsWithIgnoreCase(authHeader, BEARER_PREFIX)) {
+        if (!StringUtils.hasLength(authHeader) || !StringUtils.startsWithIgnoreCase(authHeader, BEARER_PREFIX)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -43,13 +42,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         var jwt = authHeader.substring(BEARER_PREFIX.length());
 
         String username;
-        try {
-            username = jwtUtil.extractUserName(jwt);
-        } catch (ExpiredJwtException e){
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Token is expired");
-            return;
-        }
+
+        username = jwtUtil.extractUserName(jwt);
 
         if (!username.isEmpty() && SecurityContextHolder.getContext().getAuthentication() == null) {
             var userDetails = customUserDetailsService.userDetailsService()

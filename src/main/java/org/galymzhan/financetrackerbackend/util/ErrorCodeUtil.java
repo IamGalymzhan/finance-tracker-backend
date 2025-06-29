@@ -1,21 +1,22 @@
 package org.galymzhan.financetrackerbackend.util;
 
 
-import org.galymzhan.financetrackerbackend.dto.ExceptionDto;
-import org.galymzhan.financetrackerbackend.exceptions.ErrorCodeException;
+import lombok.Getter;
 
+@Getter
 public enum ErrorCodeUtil {
-    ERR_USERNAME_ALREADY_EXISTS;
 
-    public static ExceptionDto toExceptionDto(Exception exception) {
-        if (exception instanceof ErrorCodeException e) {
-            return ExceptionDto.builder()
-                    .errorCode(e.getErrorCode())
-                    .message(e.getMessage())
-                    .build();
-        }
-        return ExceptionDto.builder()
-                .message(exception.getMessage())
-                .build();
+    USERNAME_ALREADY_EXISTS("USERNAME_ALREADY_EXISTS"),
+    RESOURCE_NOT_FOUND("RESOURCE_NOT_FOUND"),
+    AUTHENTICATION_FAILED("AUTHENTICATION_FAILED"),
+    VALIDATION_FAILED("VALIDATION_FAILED"),
+    INVALID_CREDENTIALS("INVALID_CREDENTIALS"),
+    ACCESS_DENIED("ACCESS_DENIED"),
+    INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR");
+
+    private final String code;
+
+    ErrorCodeUtil(String code) {
+        this.code = code;
     }
 }

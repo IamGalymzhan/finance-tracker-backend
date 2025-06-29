@@ -7,7 +7,6 @@ import org.galymzhan.financetrackerbackend.dto.authentication.RegisterDto;
 import org.galymzhan.financetrackerbackend.entity.Role;
 import org.galymzhan.financetrackerbackend.entity.User;
 import org.galymzhan.financetrackerbackend.exceptions.AuthenticationException;
-import org.galymzhan.financetrackerbackend.exceptions.UsernameAlreadyExistsException;
 import org.galymzhan.financetrackerbackend.service.AuthenticationService;
 import org.galymzhan.financetrackerbackend.service.CustomUserDetailsService;
 import org.galymzhan.financetrackerbackend.util.JwtUtil;
@@ -27,7 +26,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public AuthenticationDto register(RegisterDto registerDto) throws UsernameAlreadyExistsException {
+    public AuthenticationDto register(RegisterDto registerDto) {
         var user = User.builder()
                 .username(registerDto.getUsername())
                 .password(passwordEncoder.encode(registerDto.getPassword()))

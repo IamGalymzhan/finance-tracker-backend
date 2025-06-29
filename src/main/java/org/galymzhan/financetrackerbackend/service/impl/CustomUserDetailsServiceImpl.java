@@ -23,7 +23,7 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 
     @Override
     @Transactional
-    public User create(User user) throws UsernameAlreadyExistsException {
+    public User create(User user) {
         var opt = userRepository.findByUsername(user.getUsername());
         if (opt.isPresent()) {
             throw new UsernameAlreadyExistsException(

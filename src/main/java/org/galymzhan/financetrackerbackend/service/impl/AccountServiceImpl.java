@@ -32,7 +32,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountResponseDto getAccountById(Long id) throws NotFoundException {
+    public AccountResponseDto getAccountById(Long id) {
         User user = authenticationService.getCurrentUser();
         Account account = accountRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new NotFoundException("Account not found"));
@@ -41,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public AccountResponseDto create(AccountRequestDto accountRequestDto) throws NotFoundException {
+    public AccountResponseDto create(AccountRequestDto accountRequestDto) {
         Account account = accountMapper.toEntity(accountRequestDto);
         account.setUser(authenticationService.getCurrentUser());
         Account savedAccount = accountRepository.save(account);
@@ -50,7 +50,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public AccountResponseDto update(Long id, AccountRequestDto accountRequestDto) throws NotFoundException {
+    public AccountResponseDto update(Long id, AccountRequestDto accountRequestDto) {
         User user = authenticationService.getCurrentUser();
         Account account = accountRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new NotFoundException("Account not found"));
@@ -61,7 +61,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public void delete(Long id) throws NotFoundException {
+    public void delete(Long id) {
         User user = authenticationService.getCurrentUser();
         Account account = accountRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new NotFoundException("Account not found"));

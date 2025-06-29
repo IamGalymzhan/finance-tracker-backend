@@ -1,7 +1,7 @@
 package org.galymzhan.financetrackerbackend.exceptions;
 
-public class UsernameAlreadyExistsException extends Exception{
-    public UsernameAlreadyExistsException(String message){
+public class UsernameAlreadyExistsException extends RuntimeException {
+    public UsernameAlreadyExistsException(String message) {
         super(message);
     }
 }

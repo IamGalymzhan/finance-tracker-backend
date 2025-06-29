@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.galymzhan.financetrackerbackend.dto.UserProfileResponseDto;
 import org.galymzhan.financetrackerbackend.dto.UserProfileUpdateDto;
 import org.galymzhan.financetrackerbackend.entity.User;
-import org.galymzhan.financetrackerbackend.exceptions.NotFoundException;
 import org.galymzhan.financetrackerbackend.mapper.UserMapper;
 import org.galymzhan.financetrackerbackend.repository.UserRepository;
 import org.galymzhan.financetrackerbackend.service.AuthenticationService;
@@ -28,7 +27,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserProfileResponseDto updateCurrentUserProfile(UserProfileUpdateDto userProfileUpdateDto) throws NotFoundException {
+    public UserProfileResponseDto updateCurrentUserProfile(UserProfileUpdateDto userProfileUpdateDto) {
         User user = authenticationService.getCurrentUser();
         userMapper.updateEntity(user, userProfileUpdateDto);
         User updatedUser = userRepository.save(user);

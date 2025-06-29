@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.galymzhan.financetrackerbackend.dto.authentication.AuthenticationDto;
 import org.galymzhan.financetrackerbackend.dto.authentication.LoginDto;
 import org.galymzhan.financetrackerbackend.dto.authentication.RegisterDto;
-import org.galymzhan.financetrackerbackend.exceptions.UsernameAlreadyExistsException;
 import org.galymzhan.financetrackerbackend.service.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +20,7 @@ public class AuthController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationDto> register(@Valid @RequestBody RegisterDto registerDto) throws UsernameAlreadyExistsException {
+    public ResponseEntity<AuthenticationDto> register(@Valid @RequestBody RegisterDto registerDto) {
         AuthenticationDto dto = authenticationService.register(registerDto);
         return ResponseEntity.ok(dto);
     }

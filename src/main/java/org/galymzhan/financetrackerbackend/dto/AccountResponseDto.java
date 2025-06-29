@@ -9,9 +9,9 @@ import java.math.BigDecimal;
 @Value
 @Builder
 public class AccountResponseDto {
-    
+
     @JsonProperty("id")
-    String id;
+    Long id;
 
     @JsonProperty("name")
     String name;

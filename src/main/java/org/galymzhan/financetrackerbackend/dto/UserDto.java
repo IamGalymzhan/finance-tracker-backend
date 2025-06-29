@@ -17,4 +17,8 @@ public class UserDto {
     @NotEmpty
     private String password;
 
+    @NotNull
+    @NotEmpty
+    private String email;
+
 }

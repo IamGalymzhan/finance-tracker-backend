@@ -12,6 +12,7 @@ import org.galymzhan.financetrackerbackend.service.CustomUserDetailsService;
 import org.galymzhan.financetrackerbackend.util.JwtUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -61,4 +62,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .build();
     }
 
+    @Override
+    public User getCurrentUser() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof User) {
+            return (User) authentication.getPrincipal();
+        }
+        throw new RuntimeException("No authenticated user found");
+    }
 }

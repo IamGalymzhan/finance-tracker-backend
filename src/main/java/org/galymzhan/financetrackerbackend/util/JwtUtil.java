@@ -26,7 +26,7 @@ public class JwtUtil {
         var claims = new HashMap<String, Object>();
         if (userDetails instanceof User customUserDetails) {
             claims.put("id", customUserDetails.getId());
-            claims.put("phone_number", customUserDetails.getUsername());
+            claims.put("username", customUserDetails.getUsername());
         }
         return generateToken(claims, userDetails);
     }

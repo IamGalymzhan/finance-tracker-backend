@@ -24,7 +24,7 @@ public class AccountServiceImpl implements AccountService {
     private final AuthenticationService authenticationService;
 
     @Override
-    public List<AccountResponseDto> getAllAccounts() {
+    public List<AccountResponseDto> getAll() {
         User user = authenticationService.getCurrentUser();
         return accountRepository.findAllByUser(user).stream()
                 .map(accountMapper::toResponseDto)
@@ -32,7 +32,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountResponseDto getAccountById(Long id) {
+    public AccountResponseDto getById(Long id) {
         User user = authenticationService.getCurrentUser();
         Account account = accountRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new NotFoundException("Account not found"));

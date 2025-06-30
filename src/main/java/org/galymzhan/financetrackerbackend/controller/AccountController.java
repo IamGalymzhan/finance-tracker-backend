@@ -20,12 +20,12 @@ public class AccountController {
 
     @GetMapping
     public ResponseEntity<List<AccountResponseDto>> getAll() {
-        return ResponseEntity.ok(accountService.getAllAccounts());
+        return ResponseEntity.ok(accountService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AccountResponseDto> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(accountService.getAccountById(id));
+        return ResponseEntity.ok(accountService.getById(id));
     }
 
     @PostMapping

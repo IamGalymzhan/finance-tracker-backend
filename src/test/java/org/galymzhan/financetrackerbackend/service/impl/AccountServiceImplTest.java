@@ -86,7 +86,7 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void getAllAccounts_ShouldReturnAccountList_WhenUserHasAccounts() {
+    public void getAll_ShouldReturnAccountList_WhenUserHas() {
         User user = createTestUser();
         List<Account> accounts = List.of(createTestAccount());
         AccountResponseDto responseDto = createTestAccountResponseDto();
@@ -95,7 +95,7 @@ public class AccountServiceImplTest {
         when(accountRepository.findAllByUser(user)).thenReturn(accounts);
         when(accountMapper.toResponseDto(any(Account.class))).thenReturn(responseDto);
 
-        List<AccountResponseDto> result = accountService.getAllAccounts();
+        List<AccountResponseDto> result = accountService.getAll();
 
         assertThat(result).hasSize(1);
         assertThat(result.getFirst()).isEqualTo(responseDto);
@@ -105,7 +105,7 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void getAccountById_ShouldReturnAccount_WhenAccountExists() {
+    public void getById_ShouldReturnAccount_WhenExists() {
         Long accountId = 1L;
         User user = createTestUser();
         Account account = createTestAccount();
@@ -115,7 +115,7 @@ public class AccountServiceImplTest {
         when(accountRepository.findByIdAndUser(accountId, user)).thenReturn(Optional.of(account));
         when(accountMapper.toResponseDto(account)).thenReturn(responseDto);
 
-        AccountResponseDto result = accountService.getAccountById(accountId);
+        AccountResponseDto result = accountService.getById(accountId);
 
         assertThat(result).isEqualTo(responseDto);
         verify(authenticationService).getCurrentUser();
@@ -124,14 +124,14 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void getAccountById_ShouldThrowNotFoundException_WhenAccountNotFound() {
+    public void getById_ShouldThrowNotFoundException_WhenNotFound() {
         Long accountId = 1L;
         User user = createTestUser();
 
         when(authenticationService.getCurrentUser()).thenReturn(user);
         when(accountRepository.findByIdAndUser(accountId, user)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> accountService.getAccountById(accountId))
+        assertThatThrownBy(() -> accountService.getById(accountId))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Account not found");
 

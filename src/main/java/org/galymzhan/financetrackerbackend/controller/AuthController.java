@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.galymzhan.financetrackerbackend.dto.authentication.AuthenticationDto;
 import org.galymzhan.financetrackerbackend.dto.authentication.LoginDto;
+import org.galymzhan.financetrackerbackend.dto.authentication.RefreshTokenDto;
 import org.galymzhan.financetrackerbackend.dto.authentication.RegisterDto;
 import org.galymzhan.financetrackerbackend.service.AuthenticationService;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,12 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationDto> login(@Valid @RequestBody LoginDto loginDto) {
         AuthenticationDto dto = authenticationService.login(loginDto);
+        return ResponseEntity.ok(dto);
+    }
+    
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthenticationDto> refresh(@Valid @RequestBody RefreshTokenDto refreshTokenDto) {
+        AuthenticationDto dto = authenticationService.refreshToken(refreshTokenDto);
         return ResponseEntity.ok(dto);
     }
 }

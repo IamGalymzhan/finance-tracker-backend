@@ -1,7 +1,8 @@
 package org.galymzhan.financetrackerbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Value;
 import org.galymzhan.financetrackerbackend.entity.OperationType;
@@ -13,6 +14,7 @@ import java.util.Set;
 @Builder
 public class OperationRequestDto {
 
+    @Size(min = 1, max = 100)
     @JsonProperty("name")
     String name;
 
@@ -22,7 +24,7 @@ public class OperationRequestDto {
     @JsonProperty("categoryId")
     Long categoryId;
 
-    @Positive(message = "Amount must be positive")
+    @PositiveOrZero
     @JsonProperty("amount")
     BigDecimal amount;
 

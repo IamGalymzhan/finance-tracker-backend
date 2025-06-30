@@ -1,8 +1,10 @@
 package org.galymzhan.financetrackerbackend.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.galymzhan.financetrackerbackend.config.JwtProperties;
 import org.galymzhan.financetrackerbackend.dto.authentication.AuthenticationDto;
 import org.galymzhan.financetrackerbackend.dto.authentication.LoginDto;
+import org.galymzhan.financetrackerbackend.dto.authentication.RefreshTokenDto;
 import org.galymzhan.financetrackerbackend.dto.authentication.RegisterDto;
 import org.galymzhan.financetrackerbackend.entity.Role;
 import org.galymzhan.financetrackerbackend.entity.User;
@@ -24,6 +26,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final JwtProperties jwtProperties;
 
     @Override
     public AuthenticationDto register(RegisterDto registerDto) {
@@ -36,9 +39,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         customUserDetailsService.create(user);
 
-        var token = jwtUtil.generateToken(user);
-
-        return AuthenticationDto.builder().token(token).role(Role.ROLE_USER.name()).build();
+        return createAuthenticationResponse(user);
     }
 
     @Override
@@ -52,14 +53,28 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .userDetailsService()
                 .loadUserByUsername(loginDto.getUsername());
 
-        var token = jwtUtil.generateToken(user);
+        return createAuthenticationResponse((User) user);
+    }
 
-        var actualUser = (User) user;
+    @Override
+    public AuthenticationDto refreshToken(RefreshTokenDto refreshTokenDto) {
+        String refreshToken = refreshTokenDto.getRefreshToken();
 
-        return AuthenticationDto.builder()
-                .token(token)
-                .role(actualUser.getRole().name())
-                .build();
+        if (!jwtUtil.isRefreshToken(refreshToken)) {
+            throw new AuthenticationException("Invalid refresh token");
+        }
+
+        String username = jwtUtil.extractUserName(refreshToken);
+
+        var userDetails = customUserDetailsService
+                .userDetailsService()
+                .loadUserByUsername(username);
+
+        if (!jwtUtil.isTokenValid(refreshToken, userDetails)) {
+            throw new AuthenticationException("Refresh token is expired or invalid");
+        }
+
+        return createAuthenticationResponse((User) userDetails);
     }
 
     @Override
@@ -69,5 +84,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return (User) authentication.getPrincipal();
         }
         throw new AuthenticationException("No authenticated user found");
+    }
+
+    private AuthenticationDto createAuthenticationResponse(User user) {
+        String accessToken = jwtUtil.generateToken(user);
+        String refreshToken = jwtUtil.generateRefreshToken(user);
+
+        return AuthenticationDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .role(user.getRole().name())
+                .expiresIn(jwtProperties.getExpirationSeconds())
+                .build();
     }
 }

@@ -1,22 +1,15 @@
 package org.galymzhan.financetrackerbackend.dto.authentication;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Value;
 
 @Value
 @Builder
-public class AuthenticationDto {
+public class RefreshTokenDto {
 
-    @JsonProperty("accessToken")
-    String accessToken;
-
+    @NotBlank(message = "Refresh token is required")
     @JsonProperty("refreshToken")
     String refreshToken;
-
-    @JsonProperty("role")
-    String role;
-
-    @JsonProperty("expiresIn")
-    Long expiresIn;
-}
+} 

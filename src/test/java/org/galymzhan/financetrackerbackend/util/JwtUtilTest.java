@@ -23,6 +23,7 @@ class JwtUtilTest extends BaseSpringTest {
                 .email("test@example.com")
                 .role(Role.ROLE_USER)
                 .build();
+        testUser.setId(1L);
     }
 
     @Test
@@ -34,6 +35,18 @@ class JwtUtilTest extends BaseSpringTest {
         assertThat(token).isNotNull();
         assertThat(token).isNotEmpty();
         assertThat(jwtUtil.extractUserName(token)).isEqualTo("testuser");
+    }
+
+    @Test
+    void generateRefreshToken_ShouldReturnValidRefreshToken_WhenValidUser() {
+        // When
+        String refreshToken = jwtUtil.generateRefreshToken(testUser);
+
+        // Then
+        assertThat(refreshToken).isNotNull();
+        assertThat(refreshToken).isNotEmpty();
+        assertThat(jwtUtil.extractUserName(refreshToken)).isEqualTo("testuser");
+        assertThat(jwtUtil.isRefreshToken(refreshToken)).isTrue();
     }
 
     @Test
@@ -61,5 +74,68 @@ class JwtUtilTest extends BaseSpringTest {
 
         // Then
         assertThat(isValid).isFalse();
+    }
+
+    @Test
+    void extractUserId_ShouldReturnUserId_WhenValidToken() {
+        // Given
+        String token = jwtUtil.generateToken(testUser);
+
+        // When
+        Long userId = jwtUtil.extractUserId(token);
+
+        // Then
+        assertThat(userId).isEqualTo(1L);
+    }
+
+    @Test
+    void extractRole_ShouldReturnRole_WhenValidToken() {
+        // Given
+        String token = jwtUtil.generateToken(testUser);
+
+        // When
+        String role = jwtUtil.extractRole(token);
+
+        // Then
+        assertThat(role).isEqualTo("ROLE_USER");
+    }
+
+    @Test
+    void isRefreshToken_ShouldReturnTrue_WhenRefreshToken() {
+        // Given
+        String refreshToken = jwtUtil.generateRefreshToken(testUser);
+
+        // When
+        boolean isRefresh = jwtUtil.isRefreshToken(refreshToken);
+
+        // Then
+        assertThat(isRefresh).isTrue();
+    }
+
+    @Test
+    void isRefreshToken_ShouldReturnFalse_WhenAccessToken() {
+        // Given
+        String accessToken = jwtUtil.generateToken(testUser);
+
+        // When
+        boolean isRefresh = jwtUtil.isRefreshToken(accessToken);
+
+        // Then
+        assertThat(isRefresh).isFalse();
+    }
+
+    @Test
+    void refreshTokenShouldBeValid_WhenGeneratedProperly() {
+        // Given
+        String refreshToken = jwtUtil.generateRefreshToken(testUser);
+
+        // When
+        boolean isValid = jwtUtil.isTokenValid(refreshToken, testUser);
+
+        // Then
+        assertThat(isValid).isTrue();
+        assertThat(jwtUtil.isRefreshToken(refreshToken)).isTrue();
+        assertThat(jwtUtil.extractUserName(refreshToken)).isEqualTo("testuser");
+        assertThat(jwtUtil.extractUserId(refreshToken)).isEqualTo(1L);
     }
 }

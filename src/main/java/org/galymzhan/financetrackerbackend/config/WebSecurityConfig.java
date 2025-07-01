@@ -34,9 +34,12 @@ public class WebSecurityConfig {
 
     private static final String[] SWAGGER_WHITELIST = {
             "/swagger-ui/**",
+            "/swagger-ui.html",
             "/v3/api-docs/**",
+            "/api-docs/**",
             "/swagger-resources/**",
-            "/swagger-resources"
+            "/swagger-resources",
+            "/webjars/**"
     };
 
     @Bean
@@ -55,10 +58,10 @@ public class WebSecurityConfig {
                     return corsConfiguration;
                 }))
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/healthcheck").permitAll()
+                        .requestMatchers("/actuator/health").permitAll()
+                        .requestMatchers("/actuator/info").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/ping").permitAll()
-                        .requestMatchers("/healthcheck").permitAll()
                         .requestMatchers(SWAGGER_WHITELIST).permitAll()
                         .requestMatchers("/file/*").permitAll()
                         .requestMatchers("/auth/check-token").permitAll()

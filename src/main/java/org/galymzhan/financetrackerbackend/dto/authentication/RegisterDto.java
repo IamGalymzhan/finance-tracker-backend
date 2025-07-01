@@ -1,6 +1,7 @@
 package org.galymzhan.financetrackerbackend.dto.authentication;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -9,20 +10,24 @@ import lombok.Value;
 
 @Value
 @Builder
+@Schema(description = "User registration request")
 public class RegisterDto {
 
     @NotBlank(message = "Username is required")
     @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
     @JsonProperty("username")
+    @Schema(description = "Unique username", example = "john_doe", minLength = 3, maxLength = 50)
     String username;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Email should be valid")
     @JsonProperty("email")
+    @Schema(description = "User's email address", example = "john.doe@example.com")
     String email;
 
     @NotBlank(message = "Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters")
     @JsonProperty("password")
+    @Schema(description = "Account password", example = "securePassword123", minLength = 6)
     String password;
 }

@@ -1,7 +1,16 @@
 package org.galymzhan.financetrackerbackend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.galymzhan.financetrackerbackend.dto.ExceptionDto;
 import org.galymzhan.financetrackerbackend.dto.OperationRequestDto;
 import org.galymzhan.financetrackerbackend.dto.OperationResponseDto;
 import org.galymzhan.financetrackerbackend.service.OperationService;
@@ -14,32 +23,78 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/operations")
+@Tag(name = "Operations", description = "Manage financial transactions (income, expense, transfer)")
+@SecurityRequirement(name = "Bearer Authentication")
 public class OperationController {
 
     private final OperationService operationService;
 
+    @Operation(summary = "Get all operations", description = "Retrieve all user operations with details")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operations retrieved successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access",
+                    content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
+    })
     @GetMapping
     public ResponseEntity<List<OperationResponseDto>> getAll() {
         return ResponseEntity.ok(operationService.getAll());
     }
 
+    @Operation(summary = "Get operation by ID", description = "Retrieve specific operation details by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operation found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access",
+                    content = @Content(schema = @Schema(implementation = ExceptionDto.class))),
+            @ApiResponse(responseCode = "404", description = "Operation not found",
+                    content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
+    })
     @GetMapping("/{id}")
-    public ResponseEntity<OperationResponseDto> getById(@PathVariable Long id) {
+    public ResponseEntity<OperationResponseDto> getById(
+            @Parameter(description = "Operation ID", required = true) @PathVariable Long id) {
         return ResponseEntity.ok(operationService.getById(id));
     }
 
+    @Operation(summary = "Create new operation", description = "Create new operation (income, expense, or transfer)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Operation created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data",
+                    content = @Content(schema = @Schema(implementation = ExceptionDto.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access",
+                    content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
+    })
     @PostMapping
     public ResponseEntity<OperationResponseDto> create(@Valid @RequestBody OperationRequestDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(operationService.create(dto));
     }
 
+    @Operation(summary = "Update operation", description = "Update operation details like amount, category, or note")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operation updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data",
+                    content = @Content(schema = @Schema(implementation = ExceptionDto.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access",
+                    content = @Content(schema = @Schema(implementation = ExceptionDto.class))),
+            @ApiResponse(responseCode = "404", description = "Operation not found",
+                    content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
+    })
     @PatchMapping("/{id}")
-    public ResponseEntity<OperationResponseDto> update(@PathVariable Long id, @Valid @RequestBody OperationRequestDto dto) {
+    public ResponseEntity<OperationResponseDto> update(
+            @Parameter(description = "Operation ID", required = true) @PathVariable Long id,
+            @Valid @RequestBody OperationRequestDto dto) {
         return ResponseEntity.ok(operationService.update(id, dto));
     }
 
+    @Operation(summary = "Delete operation", description = "Delete operation and update account balances")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Operation deleted successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access",
+                    content = @Content(schema = @Schema(implementation = ExceptionDto.class))),
+            @ApiResponse(responseCode = "404", description = "Operation not found",
+                    content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
+    })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(
+            @Parameter(description = "Operation ID", required = true) @PathVariable Long id) {
         operationService.delete(id);
         return ResponseEntity.noContent().build();
     }

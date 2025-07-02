@@ -1,6 +1,7 @@
 package org.galymzhan.financetrackerbackend.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.galymzhan.financetrackerbackend.dto.OperationFilterDto;
 import org.galymzhan.financetrackerbackend.dto.OperationRequestDto;
 import org.galymzhan.financetrackerbackend.dto.OperationResponseDto;
 import org.galymzhan.financetrackerbackend.entity.*;
@@ -12,6 +13,10 @@ import org.galymzhan.financetrackerbackend.repository.OperationRepository;
 import org.galymzhan.financetrackerbackend.repository.TagRepository;
 import org.galymzhan.financetrackerbackend.service.AuthenticationService;
 import org.galymzhan.financetrackerbackend.service.OperationService;
+import org.galymzhan.financetrackerbackend.specification.OperationSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -37,6 +42,16 @@ public class OperationServiceImpl implements OperationService {
                 .stream()
                 .map(operationMapper::toResponseDto)
                 .toList();
+    }
+
+    @Override
+    public Page<OperationResponseDto> getAllFiltered(OperationFilterDto filters, Pageable pageable) {
+        User currentUser = authenticationService.getCurrentUser();
+
+        Specification<Operation> spec = OperationSpecification.withFilters(filters, currentUser);
+        Page<Operation> operations = operationRepository.findAll(spec, pageable);
+
+        return operations.map(operationMapper::toResponseDto);
     }
 
     @Override

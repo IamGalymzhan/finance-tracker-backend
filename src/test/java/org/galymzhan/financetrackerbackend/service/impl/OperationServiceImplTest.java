@@ -333,6 +333,6 @@ public class OperationServiceImplTest {
 
         verify(authenticationService).getCurrentUser();
         verify(operationRepository).findByIdAndUser(operationId, user);
-        verify(operationRepository, never()).delete(any());
+        verify(operationRepository, never()).delete(any(Operation.class));
     }
 }

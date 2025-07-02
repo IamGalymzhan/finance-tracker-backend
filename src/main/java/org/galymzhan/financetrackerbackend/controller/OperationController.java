@@ -11,14 +11,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.galymzhan.financetrackerbackend.dto.ExceptionDto;
+import org.galymzhan.financetrackerbackend.dto.OperationFilterDto;
 import org.galymzhan.financetrackerbackend.dto.OperationRequestDto;
 import org.galymzhan.financetrackerbackend.dto.OperationResponseDto;
 import org.galymzhan.financetrackerbackend.service.OperationService;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,8 +38,10 @@ public class OperationController {
                     content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
     })
     @GetMapping
-    public ResponseEntity<List<OperationResponseDto>> getAll() {
-        return ResponseEntity.ok(operationService.getAll());
+    public ResponseEntity<Page<OperationResponseDto>> getAllFiltered(
+            @ParameterObject OperationFilterDto filters,
+            @ParameterObject Pageable pageable) {
+        return ResponseEntity.ok(operationService.getAllFiltered(filters, pageable));
     }
 
     @Operation(summary = "Get operation by ID", description = "Retrieve specific operation details by ID")

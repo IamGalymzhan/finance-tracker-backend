@@ -3,9 +3,11 @@ package org.galymzhan.financetrackerbackend.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Value;
+import org.galymzhan.financetrackerbackend.entity.AccountType;
 import org.galymzhan.financetrackerbackend.entity.OperationType;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Value
@@ -26,6 +28,9 @@ public class OperationResponseDto {
 
     @JsonProperty("amount")
     BigDecimal amount;
+
+    @JsonProperty("date")
+    LocalDate date;
 
     @JsonProperty("accountIn")
     AccountSummaryDto accountIn;
@@ -49,7 +54,7 @@ public class OperationResponseDto {
         String name;
 
         @JsonProperty("accountType")
-        String accountType;
+        AccountType accountType;
     }
 
     @Value

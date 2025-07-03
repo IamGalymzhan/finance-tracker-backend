@@ -6,6 +6,7 @@ import lombok.*;
 import org.galymzhan.financetrackerbackend.entity.base.BaseEntityAudit;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -51,4 +52,17 @@ public class Category extends BaseEntityAudit {
     @Column
     @Size(max = 50, message = "Icon name cannot exceed 50 characters")
     private String icon;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return Objects.equals(getId(), category.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }

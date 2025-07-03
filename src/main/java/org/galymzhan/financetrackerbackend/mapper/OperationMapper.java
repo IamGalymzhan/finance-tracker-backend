@@ -28,4 +28,6 @@ public interface OperationMapper {
     @Mapping(target = "accountOut", ignore = true)
     @Mapping(target = "tags", ignore = true)
     void updateEntity(@MappingTarget Operation operation, OperationRequestDto operationRequestDto);
+
+    OperationResponseDto.AccountSummaryDto toAccountSummaryDto(org.galymzhan.financetrackerbackend.entity.Account account);
 }

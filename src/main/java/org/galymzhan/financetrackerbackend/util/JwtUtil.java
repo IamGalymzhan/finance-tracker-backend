@@ -75,6 +75,34 @@ public class JwtUtil {
                 .compact();
     }
 
+    /**
+     * Generate a development token with extremely long expiration (100 years)
+     * WARNING: Only use this for development/testing purposes!
+     */
+    public String generateDevToken(UserDetails userDetails) {
+        var claims = new HashMap<String, Object>();
+        if (userDetails instanceof User customUserDetails) {
+            claims.put("id", customUserDetails.getId());
+            claims.put("username", customUserDetails.getUsername());
+            claims.put("role", customUserDetails.getRole().name());
+        }
+        
+        long currentTime = System.currentTimeMillis();
+        // 100 years in milliseconds (effectively never expires)
+        long expirationTime = currentTime + (100L * 365L * 24L * 60L * 60L * 1000L);
+
+        log.warn("Generating DEV token with 100-year expiration for user: {} - USE ONLY FOR DEVELOPMENT!", 
+                userDetails.getUsername());
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(currentTime))
+                .setExpiration(new Date(expirationTime))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     public boolean isTokenValid(String token, UserDetails user) {
         final String userName = extractUserName(token);
         return (userName.equals(user.getUsername())) && !isTokenExpired(token);

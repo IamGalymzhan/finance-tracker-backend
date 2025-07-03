@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,8 @@ public interface OperationRepository extends JpaRepository<Operation, Long>, Jpa
     List<Operation> findAllByUser(User user);
 
     Page<Operation> findAllByUser(User user, Pageable pageable);
+
+    List<Operation> findAllByUserAndDateBetween(User user, LocalDate startDate, LocalDate endDate);
 
     Optional<Operation> findByIdAndUser(Long id, User user);
 }

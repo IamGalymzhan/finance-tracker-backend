@@ -2,13 +2,14 @@ package org.galymzhan.financetrackerbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Value;
 import org.galymzhan.financetrackerbackend.entity.OperationType;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Value
@@ -29,10 +30,14 @@ public class OperationRequestDto {
     @Schema(description = "Category ID for the operation", example = "1")
     Long categoryId;
 
-    @PositiveOrZero
+    @DecimalMin(value = "0.01", message = "Amount must be greater than 0")
     @JsonProperty("amount")
     @Schema(description = "Operation amount", example = "45.50", minimum = "0")
     BigDecimal amount;
+
+    @JsonProperty("date")
+    @Schema(description = "Operation date", example = "2024-01-01")
+    LocalDate date;
 
     @JsonProperty("accountInId")
     @Schema(description = "Destination account ID (for income/transfer)", example = "2")

@@ -1,5 +1,6 @@
 package org.galymzhan.financetrackerbackend.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.galymzhan.financetrackerbackend.dto.OperationFilterDto;
 import org.galymzhan.financetrackerbackend.dto.OperationRequestDto;
@@ -63,6 +64,7 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
+    @Transactional
     public OperationResponseDto create(OperationRequestDto operationRequestDto) {
         Operation operation = operationMapper.toEntity(operationRequestDto);
         User user = authenticationService.getCurrentUser();
@@ -74,13 +76,13 @@ public class OperationServiceImpl implements OperationService {
         operation.setCategory(category);
 
         if (operationRequestDto.getAccountInId() != null) {
-            Account accountIn = accountRepository.findById(operationRequestDto.getAccountInId())
+            Account accountIn = accountRepository.findByIdAndUser(operationRequestDto.getAccountInId(), user)
                     .orElseThrow(() -> new NotFoundException("Account not found with id: " + operationRequestDto.getAccountInId()));
             operation.setAccountIn(accountIn);
         }
 
         if (operationRequestDto.getAccountOutId() != null) {
-            Account accountOut = accountRepository.findById(operationRequestDto.getAccountOutId())
+            Account accountOut = accountRepository.findByIdAndUser(operationRequestDto.getAccountOutId(), user)
                     .orElseThrow(() -> new NotFoundException("Account not found with id: " + operationRequestDto.getAccountOutId()));
             operation.setAccountOut(accountOut);
         }
@@ -95,6 +97,7 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
+    @Transactional
     public OperationResponseDto update(Long id, OperationRequestDto operationRequestDto) {
         User user = authenticationService.getCurrentUser();
         Operation operation = operationRepository.findByIdAndUser(id, user)
@@ -107,21 +110,24 @@ public class OperationServiceImpl implements OperationService {
         }
 
         if (operationRequestDto.getAccountInId() != null) {
-            Account accountIn = accountRepository.findById(operationRequestDto.getAccountInId())
+            Account accountIn = accountRepository.findByIdAndUser(operationRequestDto.getAccountInId(), user)
                     .orElseThrow(() -> new NotFoundException("Account not found with id: " + operationRequestDto.getAccountInId()));
             operation.setAccountIn(accountIn);
         }
 
         if (operationRequestDto.getAccountOutId() != null) {
-            Account accountOut = accountRepository.findById(operationRequestDto.getAccountOutId())
+            Account accountOut = accountRepository.findByIdAndUser(operationRequestDto.getAccountOutId(), user)
                     .orElseThrow(() -> new NotFoundException("Account not found with id: " + operationRequestDto.getAccountOutId()));
             operation.setAccountOut(accountOut);
         }
 
+        Set<Tag> tags;
         if (operationRequestDto.getTagIds() != null && !operationRequestDto.getTagIds().isEmpty()) {
-            Set<Tag> tags = new HashSet<>(tagRepository.findAllByIdInAndUser(operationRequestDto.getTagIds(), user));
-            operation.setTags(tags);
+            tags = new HashSet<>(tagRepository.findAllByIdInAndUser(operationRequestDto.getTagIds(), user));
+        } else {
+            tags = new HashSet<>();
         }
+        operation.setTags(tags);
 
         operationMapper.updateEntity(operation, operationRequestDto);
         Operation updatedOperation = operationRepository.save(operation);
@@ -129,6 +135,7 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         User user = authenticationService.getCurrentUser();
         Operation operation = operationRepository.findByIdAndUser(id, user)

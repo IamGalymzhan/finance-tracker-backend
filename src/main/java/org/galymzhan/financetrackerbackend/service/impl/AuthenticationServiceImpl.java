@@ -86,6 +86,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         throw new AuthenticationException("No authenticated user found");
     }
 
+    @Override
+    public String generateDevToken(String username) {
+        var userDetails = customUserDetailsService
+                .userDetailsService()
+                .loadUserByUsername(username);
+        
+        return jwtUtil.generateDevToken(userDetails);
+    }
+
     private AuthenticationDto createAuthenticationResponse(User user) {
         String accessToken = jwtUtil.generateToken(user);
         String refreshToken = jwtUtil.generateRefreshToken(user);

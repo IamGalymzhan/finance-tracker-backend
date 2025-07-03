@@ -15,5 +15,11 @@ public interface AuthenticationService {
     AuthenticationDto refreshToken(RefreshTokenDto refreshTokenDto);
 
     User getCurrentUser();
+    
+    /**
+     * Generate a development token that effectively never expires
+     * WARNING: Only use this for development/testing purposes!
+     */
+    String generateDevToken(String username);
 }
 

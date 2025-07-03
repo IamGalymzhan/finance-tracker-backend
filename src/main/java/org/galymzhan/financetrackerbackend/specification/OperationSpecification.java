@@ -50,11 +50,11 @@ public class OperationSpecification {
 
             if (filters.getStartDate() != null) {
                 Date startDate = Date.from(filters.getStartDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createdAt"), startDate));
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("date"), startDate));
             }
             if (filters.getEndDate() != null) {
                 Date endDate = Date.from(filters.getEndDate().plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-                predicates.add(criteriaBuilder.lessThan(root.get("createdAt"), endDate));
+                predicates.add(criteriaBuilder.lessThan(root.get("date"), endDate));
             }
 
             if (filters.getSearchText() != null && !filters.getSearchText().trim().isEmpty()) {

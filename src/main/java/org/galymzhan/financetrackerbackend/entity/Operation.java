@@ -9,6 +9,7 @@ import lombok.*;
 import org.galymzhan.financetrackerbackend.entity.base.BaseEntityAudit;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,7 +31,7 @@ public class Operation extends BaseEntityAudit {
     @JoinColumn(name = "category_id")
     @NotNull
     private Category category;
-    
+
     @Column(nullable = false)
     @NotBlank
     @Size(min = 1, max = 200, message = "Operation name must be between 1 and 200 characters")
@@ -45,6 +46,10 @@ public class Operation extends BaseEntityAudit {
     @NotNull
     @DecimalMin(value = "0.01", message = "Amount must be greater than 0")
     private BigDecimal amount;
+
+    @Column(nullable = false)
+    @NotNull
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "account_in")

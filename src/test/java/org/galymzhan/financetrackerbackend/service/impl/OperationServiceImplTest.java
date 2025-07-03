@@ -137,7 +137,7 @@ public class OperationServiceImplTest {
                 .accountOut(OperationResponseDto.AccountSummaryDto.builder()
                         .id(1L)
                         .name("Test Account")
-                        .accountType("DEBIT")
+                        .accountType(AccountType.DEBIT)
                         .build())
                 .tags(Set.of(OperationResponseDto.TagSummaryDto.builder()
                         .id(1L)

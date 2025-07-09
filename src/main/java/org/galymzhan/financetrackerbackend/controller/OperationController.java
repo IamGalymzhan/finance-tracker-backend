@@ -14,13 +14,19 @@ import org.galymzhan.financetrackerbackend.dto.ExceptionDto;
 import org.galymzhan.financetrackerbackend.dto.OperationFilterDto;
 import org.galymzhan.financetrackerbackend.dto.OperationRequestDto;
 import org.galymzhan.financetrackerbackend.dto.OperationResponseDto;
+import org.galymzhan.financetrackerbackend.service.CsvExportService;
 import org.galymzhan.financetrackerbackend.service.OperationService;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,6 +36,7 @@ import org.springframework.web.bind.annotation.*;
 public class OperationController {
 
     private final OperationService operationService;
+    private final CsvExportService csvExportService;
 
     @Operation(summary = "Get all operations", description = "Retrieve all user operations with details")
     @ApiResponses(value = {
@@ -101,5 +108,23 @@ public class OperationController {
             @Parameter(description = "Operation ID", required = true) @PathVariable Long id) {
         operationService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Export operations to csv", description = "Export filtered operations in the csv format")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "CSV file generated successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access",
+                    content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
+    })
+    @GetMapping("/export/csv")
+    public ResponseEntity<Resource> exportToCsv(@ParameterObject OperationFilterDto filters) {
+        Resource csvResource = csvExportService.exportOperationsToCsv(filters);
+
+        String filename = "operations_export_" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + ".csv";
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+                .header(HttpHeaders.CONTENT_TYPE, "text/csv; charset=UTF-8")
+                .body(csvResource);
     }
 }

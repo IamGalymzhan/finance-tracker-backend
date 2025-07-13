@@ -1,0 +1,81 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: finance-tracker-postgres
+    environment:
+      POSTGRES_DB: finance_tracker
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - finance-tracker-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d finance_tracker" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: finance-tracker-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - finance-tracker-network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: finance-tracker-app
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/finance_tracker
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ""
+
+      JWT_SIGNING_KEY: gmEaidqVdxlwCNIioUzNzPh34W04w0BXC+TGj0nSFek=
+      JWT_EXPIRATION_MS: 86400000
+      JWT_REFRESH_EXPIRATION_MS: 604800000
+
+      DEV_MODE: true
+
+      SPRING_DEVTOOLS_RESTART_ENABLED: true
+      SPRING_DEVTOOLS_LIVERELOAD_ENABLED: true
+      SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 1000
+      SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 400
+    ports:
+      - "8080:8080"
+      - "35729:35729"
+    volumes:
+      - ./src:/app/src
+      - ./target:/app/target
+      - maven_cache:/root/.m2
+    command: [ "./mvnw", "spring-boot:run" ]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - finance-tracker-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  maven_cache:
+networks:
+  finance-tracker-network:
+    driver: bridge

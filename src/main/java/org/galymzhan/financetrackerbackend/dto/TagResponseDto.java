@@ -1,19 +1,23 @@
 package org.galymzhan.financetrackerbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TagResponseDto {
 
     @JsonProperty("id")
-    Long id;
+    private Long id;
 
     @JsonProperty("name")
-    String name;
+    private String name;
 
     @JsonProperty("color")
-    String color;
+    private String color;
 }

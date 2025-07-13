@@ -1,8 +1,10 @@
 package org.galymzhan.financetrackerbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.galymzhan.financetrackerbackend.entity.AccountType;
 import org.galymzhan.financetrackerbackend.entity.OperationType;
 
@@ -10,70 +12,78 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 
-@Value
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class OperationResponseDto {
 
     @JsonProperty("id")
-    Long id;
+    private Long id;
 
     @JsonProperty("name")
-    String name;
+    private String name;
 
     @JsonProperty("operationType")
-    OperationType operationType;
+    private OperationType operationType;
 
     @JsonProperty("category")
-    CategorySummaryDto category;
+    private CategorySummaryDto category;
 
     @JsonProperty("amount")
-    BigDecimal amount;
+    private BigDecimal amount;
 
     @JsonProperty("date")
-    LocalDate date;
+    private LocalDate date;
 
     @JsonProperty("accountIn")
-    AccountSummaryDto accountIn;
+    private AccountSummaryDto accountIn;
 
     @JsonProperty("accountOut")
-    AccountSummaryDto accountOut;
+    private AccountSummaryDto accountOut;
 
     @JsonProperty("note")
-    String note;
+    private String note;
 
     @JsonProperty("tags")
-    Set<TagSummaryDto> tags;
+    private Set<TagSummaryDto> tags;
 
-    @Value
+    @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class AccountSummaryDto {
         @JsonProperty("id")
-        Long id;
+        private Long id;
 
         @JsonProperty("name")
-        String name;
+        private String name;
 
         @JsonProperty("accountType")
-        AccountType accountType;
+        private AccountType accountType;
     }
 
-    @Value
+    @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class CategorySummaryDto {
         @JsonProperty("id")
-        Long id;
+        private Long id;
 
         @JsonProperty("name")
-        String name;
+        private String name;
     }
 
-    @Value
+    @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class TagSummaryDto {
         @JsonProperty("id")
-        Long id;
+        private Long id;
 
         @JsonProperty("name")
-        String name;
+        private String name;
     }
 }

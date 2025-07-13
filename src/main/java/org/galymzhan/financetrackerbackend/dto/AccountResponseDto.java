@@ -1,30 +1,34 @@
 package org.galymzhan.financetrackerbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-@Value
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AccountResponseDto {
 
     @JsonProperty("id")
-    Long id;
+    private Long id;
 
     @JsonProperty("name")
-    String name;
+    private String name;
 
     @JsonProperty("accountType")
-    String accountType;
+    private String accountType;
 
     @JsonProperty("balance")
-    BigDecimal balance;
+    private BigDecimal balance;
 
     @JsonProperty("color")
-    String color;
+    private String color;
 
     @JsonProperty("icon")
-    String icon;
+    private String icon;
 }

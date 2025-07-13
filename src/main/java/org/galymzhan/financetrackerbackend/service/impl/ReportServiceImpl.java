@@ -10,6 +10,7 @@ import org.galymzhan.financetrackerbackend.entity.User;
 import org.galymzhan.financetrackerbackend.repository.OperationRepository;
 import org.galymzhan.financetrackerbackend.service.AuthenticationService;
 import org.galymzhan.financetrackerbackend.service.ReportService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -27,6 +28,7 @@ public class ReportServiceImpl implements ReportService {
     private final AuthenticationService authenticationService;
 
     @Override
+    @Cacheable(value = "user-reports", keyGenerator = "userAwareKeyGenerator")
     public ReportOverviewDto getReportOverview(LocalDate startDate, LocalDate endDate) {
         User user = authenticationService.getCurrentUser();
         List<Operation> operations = operationRepository.findAllByUserAndDateBetween(user, startDate, endDate);

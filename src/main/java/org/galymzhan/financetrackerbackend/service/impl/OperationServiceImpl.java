@@ -15,6 +15,9 @@ import org.galymzhan.financetrackerbackend.repository.TagRepository;
 import org.galymzhan.financetrackerbackend.service.AuthenticationService;
 import org.galymzhan.financetrackerbackend.service.OperationService;
 import org.galymzhan.financetrackerbackend.specification.OperationSpecification;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -37,6 +40,7 @@ public class OperationServiceImpl implements OperationService {
     private final TagRepository tagRepository;
 
     @Override
+    @Cacheable(value = "user-operations", keyGenerator = "userAwareKeyGenerator")
     public List<OperationResponseDto> getAll() {
         User user = authenticationService.getCurrentUser();
         return operationRepository.findAllByUser(user)
@@ -56,6 +60,7 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
+    @Cacheable(value = "user-operation-by-id", keyGenerator = "userAwareKeyGenerator")
     public OperationResponseDto getById(Long id) {
         User user = authenticationService.getCurrentUser();
         Operation operation = operationRepository.findByIdAndUser(id, user)
@@ -65,6 +70,11 @@ public class OperationServiceImpl implements OperationService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "user-operations", allEntries = true),
+            @CacheEvict(value = "user-operation-by-id", allEntries = true),
+            @CacheEvict(value = "user-reports", allEntries = true)
+    })
     public OperationResponseDto create(OperationRequestDto operationRequestDto) {
         Operation operation = operationMapper.toEntity(operationRequestDto);
         User user = authenticationService.getCurrentUser();
@@ -98,6 +108,11 @@ public class OperationServiceImpl implements OperationService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "user-operations", allEntries = true),
+            @CacheEvict(value = "user-operation-by-id", allEntries = true),
+            @CacheEvict(value = "user-reports", allEntries = true)
+    })
     public OperationResponseDto update(Long id, OperationRequestDto operationRequestDto) {
         User user = authenticationService.getCurrentUser();
         Operation operation = operationRepository.findByIdAndUser(id, user)
@@ -136,6 +151,11 @@ public class OperationServiceImpl implements OperationService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "user-operations", allEntries = true),
+            @CacheEvict(value = "user-operation-by-id", allEntries = true),
+            @CacheEvict(value = "user-reports", allEntries = true)
+    })
     public void delete(Long id) {
         User user = authenticationService.getCurrentUser();
         Operation operation = operationRepository.findByIdAndUser(id, user)

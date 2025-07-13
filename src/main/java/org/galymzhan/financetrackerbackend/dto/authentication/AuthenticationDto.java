@@ -2,21 +2,21 @@ package org.galymzhan.financetrackerbackend.dto.authentication;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 @Builder
 public class AuthenticationDto {
 
     @JsonProperty("accessToken")
-    String accessToken;
+    private String accessToken;
 
     @JsonProperty("refreshToken")
-    String refreshToken;
+    private String refreshToken;
 
     @JsonProperty("role")
-    String role;
+    private String role;
 
     @JsonProperty("expiresIn")
-    Long expiresIn;
+    private Long expiresIn;
 }

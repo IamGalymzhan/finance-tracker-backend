@@ -9,9 +9,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class ReportOverviewDto {
 
     private BigDecimal totalIncome;

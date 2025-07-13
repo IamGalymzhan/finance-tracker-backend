@@ -13,9 +13,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Schema(description = "Filter criteria for operations")
 public class OperationFilterDto {
 

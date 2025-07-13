@@ -11,6 +11,8 @@ import org.galymzhan.financetrackerbackend.mapper.AccountMapper;
 import org.galymzhan.financetrackerbackend.repository.AccountRepository;
 import org.galymzhan.financetrackerbackend.service.AccountService;
 import org.galymzhan.financetrackerbackend.service.AuthenticationService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +26,7 @@ public class AccountServiceImpl implements AccountService {
     private final AuthenticationService authenticationService;
 
     @Override
+    @Cacheable(value = "user-accounts", keyGenerator = "userAwareKeyGenerator")
     public List<AccountResponseDto> getAll() {
         User user = authenticationService.getCurrentUser();
         return accountRepository.findAllByUser(user).stream()
@@ -32,6 +35,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Cacheable(value = "user-account-by-id", keyGenerator = "userAwareKeyGenerator")
     public AccountResponseDto getById(Long id) {
         User user = authenticationService.getCurrentUser();
         Account account = accountRepository.findByIdAndUser(id, user)
@@ -41,6 +45,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"user-accounts", "user-account-by-id"}, allEntries = true)
     public AccountResponseDto create(AccountRequestDto accountRequestDto) {
         Account account = accountMapper.toEntity(accountRequestDto);
         account.setUser(authenticationService.getCurrentUser());
@@ -50,6 +55,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"user-accounts", "user-account-by-id"}, allEntries = true)
     public AccountResponseDto update(Long id, AccountRequestDto accountRequestDto) {
         User user = authenticationService.getCurrentUser();
         Account account = accountRepository.findByIdAndUser(id, user)
@@ -61,6 +67,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"user-accounts", "user-account-by-id"}, allEntries = true)
     public void delete(Long id) {
         User user = authenticationService.getCurrentUser();
         Account account = accountRepository.findByIdAndUser(id, user)

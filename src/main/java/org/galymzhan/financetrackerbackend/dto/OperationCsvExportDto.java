@@ -1,33 +1,37 @@
 package org.galymzhan.financetrackerbackend.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Value
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class OperationCsvExportDto {
 
-    LocalDate date;
+    private LocalDate date;
 
-    String description;
+    private String description;
 
-    BigDecimal amount;
+    private BigDecimal amount;
 
-    String type;
+    private String type;
 
-    String category;
+    private String category;
 
-    String accountIn;
+    private String accountIn;
 
-    String accountOut;
+    private String accountOut;
 
-    String tags;
+    private String tags;
 
-    String note;
-    
-    LocalDateTime createdDate;
+    private String note;
+
+    private LocalDateTime createdDate;
 }

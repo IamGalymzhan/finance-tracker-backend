@@ -1,0 +1,13 @@
+target/
+!target/finance-tracker-backend-0.0.1-SNAPSHOT.jar
+.git
+.gitignore
+README.md
+Dockerfile
+docker-compose.yml
+.dockerignore
+.idea/
+*.iml
+.vscode/
+.DS_Store
+dump.rdb

@@ -1,36 +1,40 @@
 package org.galymzhan.financetrackerbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-@Value
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CategoryResponseDto {
 
     @JsonProperty("id")
-    Long id;
+    private Long id;
 
     @JsonProperty("parentCategoryId")
-    Long parentCategoryId;
+    private Long parentCategoryId;
 
     @JsonProperty("name")
-    String name;
+    private String name;
 
     @JsonProperty("description")
-    String description;
+    private String description;
 
     @JsonProperty("direction")
-    String direction;
+    private String direction;
 
     @JsonProperty("targetAmount")
-    BigDecimal targetAmount;
+    private BigDecimal targetAmount;
 
     @JsonProperty("color")
-    String color;
+    private String color;
 
     @JsonProperty("icon")
-    String icon;
+    private String icon;
 }

@@ -60,6 +60,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/actuator/info").permitAll()
+                        .requestMatchers("/actuator/**").hasRole("ADMIN")
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/ping").permitAll()
                         .requestMatchers(SWAGGER_WHITELIST).permitAll()

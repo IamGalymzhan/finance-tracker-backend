@@ -13,7 +13,7 @@ services:
     networks:
       - finance-tracker-network
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres -d finance_tracker" ]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d finance_tracker"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -28,7 +28,7 @@ services:
     networks:
       - finance-tracker-network
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -45,7 +45,7 @@ services:
       REDIS_PORT: 6379
       REDIS_PASSWORD: ""
 
-      JWT_SIGNING_KEY: gmEaidqVdxlwCNIioUzNzPh34W04w0BXC+TGj0nSFek=
+      JWT_SIGNING_KEY: singing-key
       JWT_EXPIRATION_MS: 86400000
       JWT_REFRESH_EXPIRATION_MS: 604800000
 
@@ -62,7 +62,7 @@ services:
       - ./src:/app/src
       - ./target:/app/target
       - maven_cache:/root/.m2
-    command: [ "./mvnw", "spring-boot:run" ]
+    command: ["./mvnw", "spring-boot:run"]
     depends_on:
       postgres:
         condition: service_healthy

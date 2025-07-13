@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.interceptor.CacheErrorHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -20,8 +23,12 @@ import java.util.Map;
 
 @Configuration
 @EnableCaching
+@RequiredArgsConstructor
 public class RedisConfig {
 
+    private final CacheErrorHandler cacheErrorHandler;
+
+    
     @Bean
     public RedisCacheManager redisCacheManager(RedisConnectionFactory factory) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -33,10 +40,17 @@ public class RedisConfig {
                 .allowIfSubType("java.lang")
                 .allowIfSubType("java.math")
                 .allowIfSubType("java.time")
+                .allowIfSubType("java.math.BigDecimal")
+                .allowIfSubType("java.util.ArrayList")
+                .allowIfSubType("java.util.LinkedList")
+                .allowIfSubType("java.util.HashSet")
+                .allowIfSubType("java.util.LinkedHashSet")
+                .allowIfSubType("java.util.HashMap")
+                .allowIfSubType("java.util.LinkedHashMap")
                 .build();
 
         objectMapper.activateDefaultTyping(validator,
-                ObjectMapper.DefaultTyping.EVERYTHING,
+                ObjectMapper.DefaultTyping.NON_FINAL,
                 JsonTypeInfo.As.PROPERTY);
 
         GenericJackson2JsonRedisSerializer serializer = new GenericJackson2JsonRedisSerializer(objectMapper);
@@ -62,5 +76,15 @@ public class RedisConfig {
                 .cacheDefaults(config)
                 .withInitialCacheConfigurations(cacheConfigurations)
                 .build();
+    }
+
+    @Bean
+    public CachingConfigurer cachingConfigurer() {
+        return new CachingConfigurer() {
+            @Override
+            public CacheErrorHandler errorHandler() {
+                return cacheErrorHandler;
+            }
+        };
     }
 }

@@ -2,8 +2,8 @@ package org.galymzhan.financetrackerbackend.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.galymzhan.financetrackerbackend.dto.AccountRequestDto;
-import org.galymzhan.financetrackerbackend.dto.AccountResponseDto;
+import org.galymzhan.financetrackerbackend.dto.request.AccountRequestDto;
+import org.galymzhan.financetrackerbackend.dto.response.AccountResponseDto;
 import org.galymzhan.financetrackerbackend.entity.Account;
 import org.galymzhan.financetrackerbackend.entity.User;
 import org.galymzhan.financetrackerbackend.exceptions.NotFoundException;

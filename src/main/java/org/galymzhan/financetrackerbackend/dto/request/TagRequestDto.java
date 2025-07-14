@@ -1,6 +1,8 @@
-package org.galymzhan.financetrackerbackend.dto;
+package org.galymzhan.financetrackerbackend.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,14 +12,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TagResponseDto {
+public class TagRequestDto {
 
-    @JsonProperty("id")
-    private Long id;
-
+    @Size(min = 1, max = 100)
     @JsonProperty("name")
     private String name;
 
+    @Pattern(regexp = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$", message = "Color must be a valid hex color code")
     @JsonProperty("color")
     private String color;
 }

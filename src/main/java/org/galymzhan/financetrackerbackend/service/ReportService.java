@@ -1,6 +1,6 @@
 package org.galymzhan.financetrackerbackend.service;
 
-import org.galymzhan.financetrackerbackend.dto.ReportOverviewDto;
+import org.galymzhan.financetrackerbackend.dto.report.ReportOverviewDto;
 
 import java.time.LocalDate;
 

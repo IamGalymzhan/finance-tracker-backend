@@ -1,4 +1,4 @@
-package org.galymzhan.financetrackerbackend.dto;
+package org.galymzhan.financetrackerbackend.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Pattern;

@@ -1,8 +1,8 @@
 package org.galymzhan.financetrackerbackend.service;
 
-import org.galymzhan.financetrackerbackend.dto.OperationFilterDto;
-import org.galymzhan.financetrackerbackend.dto.OperationRequestDto;
-import org.galymzhan.financetrackerbackend.dto.OperationResponseDto;
+import org.galymzhan.financetrackerbackend.dto.filter.OperationFilterDto;
+import org.galymzhan.financetrackerbackend.dto.request.OperationRequestDto;
+import org.galymzhan.financetrackerbackend.dto.response.OperationResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

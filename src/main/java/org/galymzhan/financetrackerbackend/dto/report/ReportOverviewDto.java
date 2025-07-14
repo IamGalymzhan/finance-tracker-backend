@@ -1,4 +1,4 @@
-package org.galymzhan.financetrackerbackend.dto;
+package org.galymzhan.financetrackerbackend.dto.report;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

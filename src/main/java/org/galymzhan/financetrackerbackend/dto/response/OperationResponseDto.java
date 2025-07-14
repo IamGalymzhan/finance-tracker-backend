@@ -1,4 +1,4 @@
-package org.galymzhan.financetrackerbackend.dto;
+package org.galymzhan.financetrackerbackend.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

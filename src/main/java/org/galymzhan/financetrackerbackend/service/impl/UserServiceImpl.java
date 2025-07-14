@@ -2,8 +2,8 @@ package org.galymzhan.financetrackerbackend.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.galymzhan.financetrackerbackend.dto.UserProfileResponseDto;
-import org.galymzhan.financetrackerbackend.dto.UserProfileUpdateDto;
+import org.galymzhan.financetrackerbackend.dto.request.UserProfileUpdateDto;
+import org.galymzhan.financetrackerbackend.dto.response.UserProfileResponseDto;
 import org.galymzhan.financetrackerbackend.entity.User;
 import org.galymzhan.financetrackerbackend.mapper.UserMapper;
 import org.galymzhan.financetrackerbackend.repository.UserRepository;

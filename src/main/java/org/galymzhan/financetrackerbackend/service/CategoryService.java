@@ -1,7 +1,7 @@
 package org.galymzhan.financetrackerbackend.service;
 
-import org.galymzhan.financetrackerbackend.dto.CategoryRequestDto;
-import org.galymzhan.financetrackerbackend.dto.CategoryResponseDto;
+import org.galymzhan.financetrackerbackend.dto.request.CategoryRequestDto;
+import org.galymzhan.financetrackerbackend.dto.response.CategoryResponseDto;
 
 import java.util.List;
 

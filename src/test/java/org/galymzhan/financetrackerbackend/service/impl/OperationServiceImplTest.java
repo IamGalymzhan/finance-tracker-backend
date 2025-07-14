@@ -1,7 +1,7 @@
 package org.galymzhan.financetrackerbackend.service.impl;
 
-import org.galymzhan.financetrackerbackend.dto.OperationRequestDto;
-import org.galymzhan.financetrackerbackend.dto.OperationResponseDto;
+import org.galymzhan.financetrackerbackend.dto.request.OperationRequestDto;
+import org.galymzhan.financetrackerbackend.dto.response.OperationResponseDto;
 import org.galymzhan.financetrackerbackend.entity.*;
 import org.galymzhan.financetrackerbackend.exceptions.NotFoundException;
 import org.galymzhan.financetrackerbackend.mapper.OperationMapper;

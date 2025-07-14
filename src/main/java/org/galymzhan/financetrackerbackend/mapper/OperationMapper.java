@@ -1,8 +1,8 @@
 package org.galymzhan.financetrackerbackend.mapper;
 
-import org.galymzhan.financetrackerbackend.dto.OperationCsvExportDto;
-import org.galymzhan.financetrackerbackend.dto.OperationRequestDto;
-import org.galymzhan.financetrackerbackend.dto.OperationResponseDto;
+import org.galymzhan.financetrackerbackend.dto.request.OperationRequestDto;
+import org.galymzhan.financetrackerbackend.dto.response.OperationCsvExportDto;
+import org.galymzhan.financetrackerbackend.dto.response.OperationResponseDto;
 import org.galymzhan.financetrackerbackend.entity.Category;
 import org.galymzhan.financetrackerbackend.entity.Operation;
 import org.galymzhan.financetrackerbackend.entity.Tag;

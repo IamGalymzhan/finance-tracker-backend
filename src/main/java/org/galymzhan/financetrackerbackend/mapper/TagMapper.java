@@ -1,7 +1,7 @@
 package org.galymzhan.financetrackerbackend.mapper;
 
-import org.galymzhan.financetrackerbackend.dto.TagRequestDto;
-import org.galymzhan.financetrackerbackend.dto.TagResponseDto;
+import org.galymzhan.financetrackerbackend.dto.request.TagRequestDto;
+import org.galymzhan.financetrackerbackend.dto.response.TagResponseDto;
 import org.galymzhan.financetrackerbackend.entity.Tag;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

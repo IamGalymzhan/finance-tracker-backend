@@ -1,7 +1,7 @@
 package org.galymzhan.financetrackerbackend.service.impl;
 
-import org.galymzhan.financetrackerbackend.dto.TagRequestDto;
-import org.galymzhan.financetrackerbackend.dto.TagResponseDto;
+import org.galymzhan.financetrackerbackend.dto.request.TagRequestDto;
+import org.galymzhan.financetrackerbackend.dto.response.TagResponseDto;
 import org.galymzhan.financetrackerbackend.entity.Role;
 import org.galymzhan.financetrackerbackend.entity.Tag;
 import org.galymzhan.financetrackerbackend.entity.User;

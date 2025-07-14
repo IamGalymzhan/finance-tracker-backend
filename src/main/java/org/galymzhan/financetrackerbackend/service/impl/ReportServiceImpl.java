@@ -1,8 +1,8 @@
 package org.galymzhan.financetrackerbackend.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.galymzhan.financetrackerbackend.dto.ReportCategoryDto;
-import org.galymzhan.financetrackerbackend.dto.ReportOverviewDto;
+import org.galymzhan.financetrackerbackend.dto.report.ReportCategoryDto;
+import org.galymzhan.financetrackerbackend.dto.report.ReportOverviewDto;
 import org.galymzhan.financetrackerbackend.entity.Category;
 import org.galymzhan.financetrackerbackend.entity.Operation;
 import org.galymzhan.financetrackerbackend.entity.OperationType;

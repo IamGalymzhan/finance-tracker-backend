@@ -3,7 +3,7 @@ package org.galymzhan.financetrackerbackend.specification;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
-import org.galymzhan.financetrackerbackend.dto.OperationFilterDto;
+import org.galymzhan.financetrackerbackend.dto.filter.OperationFilterDto;
 import org.galymzhan.financetrackerbackend.entity.Operation;
 import org.galymzhan.financetrackerbackend.entity.Tag;
 import org.galymzhan.financetrackerbackend.entity.User;

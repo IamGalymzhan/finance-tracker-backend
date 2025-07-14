@@ -9,9 +9,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.galymzhan.financetrackerbackend.dto.ExceptionDto;
-import org.galymzhan.financetrackerbackend.dto.UserProfileResponseDto;
-import org.galymzhan.financetrackerbackend.dto.UserProfileUpdateDto;
+import org.galymzhan.financetrackerbackend.dto.request.UserProfileUpdateDto;
+import org.galymzhan.financetrackerbackend.dto.response.ExceptionDto;
+import org.galymzhan.financetrackerbackend.dto.response.UserProfileResponseDto;
 import org.galymzhan.financetrackerbackend.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +27,9 @@ public class UserController {
 
     @Operation(summary = "Get user profile", description = "Retrieve current user's profile information")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Profile retrieved successfully"),
-        @ApiResponse(responseCode = "401", description = "Unauthorized access",
-            content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
+            @ApiResponse(responseCode = "200", description = "Profile retrieved successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access",
+                    content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
     })
     @GetMapping("/me")
     public ResponseEntity<UserProfileResponseDto> getUserProfile() {
@@ -39,11 +39,11 @@ public class UserController {
 
     @Operation(summary = "Update user profile", description = "Update current user's profile information")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Profile updated successfully"),
-        @ApiResponse(responseCode = "400", description = "Invalid input data",
-            content = @Content(schema = @Schema(implementation = ExceptionDto.class))),
-        @ApiResponse(responseCode = "401", description = "Unauthorized access",
-            content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
+            @ApiResponse(responseCode = "200", description = "Profile updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data",
+                    content = @Content(schema = @Schema(implementation = ExceptionDto.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access",
+                    content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
     })
     @PatchMapping("/me")
     public ResponseEntity<UserProfileResponseDto> updateUserProfile(@Valid @RequestBody UserProfileUpdateDto updateDto) {

@@ -2,7 +2,7 @@ package org.galymzhan.financetrackerbackend.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.galymzhan.financetrackerbackend.dto.ReportOverviewDto;
+import org.galymzhan.financetrackerbackend.dto.report.ReportOverviewDto;
 import org.galymzhan.financetrackerbackend.service.ReportService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;

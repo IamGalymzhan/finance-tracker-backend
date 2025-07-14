@@ -1,7 +1,7 @@
 package org.galymzhan.financetrackerbackend.service.impl;
 
-import org.galymzhan.financetrackerbackend.dto.AccountRequestDto;
-import org.galymzhan.financetrackerbackend.dto.AccountResponseDto;
+import org.galymzhan.financetrackerbackend.dto.request.AccountRequestDto;
+import org.galymzhan.financetrackerbackend.dto.response.AccountResponseDto;
 import org.galymzhan.financetrackerbackend.entity.Account;
 import org.galymzhan.financetrackerbackend.entity.AccountType;
 import org.galymzhan.financetrackerbackend.entity.Role;

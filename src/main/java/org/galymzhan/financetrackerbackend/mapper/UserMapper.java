@@ -1,7 +1,7 @@
 package org.galymzhan.financetrackerbackend.mapper;
 
-import org.galymzhan.financetrackerbackend.dto.UserProfileResponseDto;
-import org.galymzhan.financetrackerbackend.dto.UserProfileUpdateDto;
+import org.galymzhan.financetrackerbackend.dto.request.UserProfileUpdateDto;
+import org.galymzhan.financetrackerbackend.dto.response.UserProfileResponseDto;
 import org.galymzhan.financetrackerbackend.entity.User;
 import org.mapstruct.*;
 

@@ -1,7 +1,7 @@
 package org.galymzhan.financetrackerbackend.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.galymzhan.financetrackerbackend.dto.ExceptionDto;
+import org.galymzhan.financetrackerbackend.dto.response.ExceptionDto;
 import org.galymzhan.financetrackerbackend.exceptions.AuthenticationException;
 import org.galymzhan.financetrackerbackend.exceptions.ErrorCodeException;
 import org.galymzhan.financetrackerbackend.exceptions.NotFoundException;

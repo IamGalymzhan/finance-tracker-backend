@@ -6,8 +6,8 @@ import org.galymzhan.financetrackerbackend.dto.authentication.AuthenticationDto;
 import org.galymzhan.financetrackerbackend.dto.authentication.LoginDto;
 import org.galymzhan.financetrackerbackend.dto.authentication.RefreshTokenDto;
 import org.galymzhan.financetrackerbackend.dto.authentication.RegisterDto;
-import org.galymzhan.financetrackerbackend.entity.Role;
 import org.galymzhan.financetrackerbackend.entity.User;
+import org.galymzhan.financetrackerbackend.entity.enums.Role;
 import org.galymzhan.financetrackerbackend.exceptions.AuthenticationException;
 import org.galymzhan.financetrackerbackend.service.AuthenticationService;
 import org.galymzhan.financetrackerbackend.service.CustomUserDetailsService;
@@ -91,7 +91,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var userDetails = customUserDetailsService
                 .userDetailsService()
                 .loadUserByUsername(username);
-        
+
         return jwtUtil.generateDevToken(userDetails);
     }
 

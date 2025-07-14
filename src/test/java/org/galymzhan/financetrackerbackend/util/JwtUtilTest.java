@@ -1,8 +1,8 @@
 package org.galymzhan.financetrackerbackend.util;
 
 import org.galymzhan.financetrackerbackend.BaseSpringTest;
-import org.galymzhan.financetrackerbackend.entity.Role;
 import org.galymzhan.financetrackerbackend.entity.User;
+import org.galymzhan.financetrackerbackend.entity.enums.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

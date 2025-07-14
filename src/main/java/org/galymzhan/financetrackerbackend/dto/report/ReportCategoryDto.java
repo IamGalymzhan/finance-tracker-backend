@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.galymzhan.financetrackerbackend.entity.Direction;
+import org.galymzhan.financetrackerbackend.entity.enums.Direction;
 
 import java.math.BigDecimal;
 

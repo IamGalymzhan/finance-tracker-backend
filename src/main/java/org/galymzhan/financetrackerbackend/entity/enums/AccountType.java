@@ -1,4 +1,4 @@
-package org.galymzhan.financetrackerbackend.entity;
+package org.galymzhan.financetrackerbackend.entity.enums;
 
 public enum AccountType {
     DEBIT,

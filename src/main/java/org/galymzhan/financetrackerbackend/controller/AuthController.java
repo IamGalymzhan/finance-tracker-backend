@@ -78,7 +78,7 @@ public class AuthController {
             @ApiResponse(responseCode = "503", description = "Endpoint disabled in production")
     })
     @PostMapping("/dev-token")
-    @ConditionalOnProperty(name = "app.dev-mode", havingValue = "true")
+    @ConditionalOnProperty(name = "debug", havingValue = "true")
     public ResponseEntity<String> generateDevToken(@RequestParam String username) {
         String devToken = authenticationService.generateDevToken(username);
         return ResponseEntity.ok(devToken);

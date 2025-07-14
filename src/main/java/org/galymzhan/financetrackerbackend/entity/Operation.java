@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.galymzhan.financetrackerbackend.entity.base.BaseEntityAudit;
+import org.galymzhan.financetrackerbackend.entity.enums.OperationType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

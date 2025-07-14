@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.galymzhan.financetrackerbackend.entity.base.BaseEntityAudit;
+import org.galymzhan.financetrackerbackend.entity.enums.Direction;
 
 import java.math.BigDecimal;
 import java.util.Objects;

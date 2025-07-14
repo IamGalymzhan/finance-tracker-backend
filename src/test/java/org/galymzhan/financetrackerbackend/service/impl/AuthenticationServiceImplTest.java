@@ -5,8 +5,8 @@ import org.galymzhan.financetrackerbackend.dto.authentication.AuthenticationDto;
 import org.galymzhan.financetrackerbackend.dto.authentication.LoginDto;
 import org.galymzhan.financetrackerbackend.dto.authentication.RefreshTokenDto;
 import org.galymzhan.financetrackerbackend.dto.authentication.RegisterDto;
-import org.galymzhan.financetrackerbackend.entity.Role;
 import org.galymzhan.financetrackerbackend.entity.User;
+import org.galymzhan.financetrackerbackend.entity.enums.Role;
 import org.galymzhan.financetrackerbackend.exceptions.AuthenticationException;
 import org.galymzhan.financetrackerbackend.exceptions.UsernameAlreadyExistsException;
 import org.galymzhan.financetrackerbackend.service.CustomUserDetailsService;
@@ -42,10 +42,10 @@ public class AuthenticationServiceImplTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
-    
+
     @Mock
     private AuthenticationManager authenticationManager;
-    
+
     @Mock
     private JwtProperties jwtProperties;
 
@@ -105,7 +105,7 @@ public class AuthenticationServiceImplTest {
                 .isInstanceOf(UsernameAlreadyExistsException.class)
                 .hasMessage("User exists");
     }
-    
+
     @Test
     public void login_ShouldReturnAuthenticationDto_WhenValidCredentials() {
         // Given
@@ -138,7 +138,7 @@ public class AuthenticationServiceImplTest {
         assertThat(result.getExpiresIn()).isEqualTo(3600L);
         verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
     }
-    
+
     @Test
     public void refreshToken_ShouldReturnNewTokens_WhenValidRefreshToken() {
         // Given
@@ -172,7 +172,7 @@ public class AuthenticationServiceImplTest {
         assertThat(result.getRole()).isEqualTo("ROLE_USER");
         assertThat(result.getExpiresIn()).isEqualTo(3600L);
     }
-    
+
     @Test
     public void refreshToken_ShouldThrowException_WhenNotRefreshToken() {
         // Given
@@ -187,7 +187,7 @@ public class AuthenticationServiceImplTest {
                 .isInstanceOf(AuthenticationException.class)
                 .hasMessage("Invalid refresh token");
     }
-    
+
     @Test
     public void refreshToken_ShouldThrowException_WhenRefreshTokenExpired() {
         // Given

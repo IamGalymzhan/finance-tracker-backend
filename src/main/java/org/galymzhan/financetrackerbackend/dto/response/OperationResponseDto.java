@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.galymzhan.financetrackerbackend.entity.AccountType;
-import org.galymzhan.financetrackerbackend.entity.OperationType;
+import org.galymzhan.financetrackerbackend.entity.enums.AccountType;
+import org.galymzhan.financetrackerbackend.entity.enums.OperationType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

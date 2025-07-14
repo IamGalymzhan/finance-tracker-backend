@@ -1,7 +1,7 @@
 package org.galymzhan.financetrackerbackend.service.impl;
 
-import org.galymzhan.financetrackerbackend.entity.Role;
 import org.galymzhan.financetrackerbackend.entity.User;
+import org.galymzhan.financetrackerbackend.entity.enums.Role;
 import org.galymzhan.financetrackerbackend.exceptions.UsernameAlreadyExistsException;
 import org.galymzhan.financetrackerbackend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,7 +68,7 @@ public class CustomUserDetailsServiceImplTest {
 
         assertThatThrownBy(() -> customUserDetailsService.create(userToCreate))
                 .isInstanceOf(UsernameAlreadyExistsException.class);
-        
+
         verify(userRepository, never()).save(any(User.class));
     }
 

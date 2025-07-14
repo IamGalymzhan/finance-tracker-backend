@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.galymzhan.financetrackerbackend.entity.OperationType;
+import org.galymzhan.financetrackerbackend.entity.enums.OperationType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;

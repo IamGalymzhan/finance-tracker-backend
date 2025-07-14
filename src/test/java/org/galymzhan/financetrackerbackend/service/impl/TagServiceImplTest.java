@@ -2,9 +2,9 @@ package org.galymzhan.financetrackerbackend.service.impl;
 
 import org.galymzhan.financetrackerbackend.dto.request.TagRequestDto;
 import org.galymzhan.financetrackerbackend.dto.response.TagResponseDto;
-import org.galymzhan.financetrackerbackend.entity.Role;
 import org.galymzhan.financetrackerbackend.entity.Tag;
 import org.galymzhan.financetrackerbackend.entity.User;
+import org.galymzhan.financetrackerbackend.entity.enums.Role;
 import org.galymzhan.financetrackerbackend.exceptions.NotFoundException;
 import org.galymzhan.financetrackerbackend.mapper.TagMapper;
 import org.galymzhan.financetrackerbackend.repository.TagRepository;

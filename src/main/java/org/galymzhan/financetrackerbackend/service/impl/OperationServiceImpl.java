@@ -12,6 +12,7 @@ import org.galymzhan.financetrackerbackend.repository.AccountRepository;
 import org.galymzhan.financetrackerbackend.repository.CategoryRepository;
 import org.galymzhan.financetrackerbackend.repository.OperationRepository;
 import org.galymzhan.financetrackerbackend.repository.TagRepository;
+import org.galymzhan.financetrackerbackend.service.AccountBalanceService;
 import org.galymzhan.financetrackerbackend.service.AuthenticationService;
 import org.galymzhan.financetrackerbackend.service.OperationService;
 import org.galymzhan.financetrackerbackend.specification.OperationSpecification;
@@ -33,6 +34,7 @@ public class OperationServiceImpl implements OperationService {
 
     private final OperationMapper operationMapper;
     private final AuthenticationService authenticationService;
+    private final AccountBalanceService accountBalanceService;
 
     private final OperationRepository operationRepository;
     private final AccountRepository accountRepository;
@@ -73,7 +75,9 @@ public class OperationServiceImpl implements OperationService {
     @Caching(evict = {
             @CacheEvict(value = "user-operations", allEntries = true),
             @CacheEvict(value = "user-operation-by-id", allEntries = true),
-            @CacheEvict(value = "user-reports", allEntries = true)
+            @CacheEvict(value = "user-reports", allEntries = true),
+            @CacheEvict(value = "user-accounts", allEntries = true),
+            @CacheEvict(value = "user-account-by-id", allEntries = true)
     })
     public OperationResponseDto create(OperationRequestDto operationRequestDto) {
         Operation operation = operationMapper.toEntity(operationRequestDto);
@@ -103,6 +107,9 @@ public class OperationServiceImpl implements OperationService {
         }
 
         Operation savedOperation = operationRepository.save(operation);
+
+        accountBalanceService.applyBalanceChange(savedOperation);
+
         return operationMapper.toResponseDto(savedOperation);
     }
 
@@ -111,12 +118,17 @@ public class OperationServiceImpl implements OperationService {
     @Caching(evict = {
             @CacheEvict(value = "user-operations", allEntries = true),
             @CacheEvict(value = "user-operation-by-id", allEntries = true),
-            @CacheEvict(value = "user-reports", allEntries = true)
+            @CacheEvict(value = "user-reports", allEntries = true),
+            @CacheEvict(value = "user-accounts", allEntries = true),
+            @CacheEvict(value = "user-account-by-id", allEntries = true)
     })
     public OperationResponseDto update(Long id, OperationRequestDto operationRequestDto) {
         User user = authenticationService.getCurrentUser();
         Operation operation = operationRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new NotFoundException("Operation Not Found"));
+
+        accountBalanceService.revertBalanceChange(operation);
+
 
         if (operationRequestDto.getCategoryId() != null) {
             Category category = categoryRepository.findByIdAndUser(operationRequestDto.getCategoryId(), user)
@@ -146,6 +158,9 @@ public class OperationServiceImpl implements OperationService {
 
         operationMapper.updateEntity(operation, operationRequestDto);
         Operation updatedOperation = operationRepository.save(operation);
+
+        accountBalanceService.applyBalanceChange(updatedOperation);
+
         return operationMapper.toResponseDto(updatedOperation);
     }
 
@@ -154,12 +169,17 @@ public class OperationServiceImpl implements OperationService {
     @Caching(evict = {
             @CacheEvict(value = "user-operations", allEntries = true),
             @CacheEvict(value = "user-operation-by-id", allEntries = true),
-            @CacheEvict(value = "user-reports", allEntries = true)
+            @CacheEvict(value = "user-reports", allEntries = true),
+            @CacheEvict(value = "user-accounts", allEntries = true),
+            @CacheEvict(value = "user-account-by-id", allEntries = true)
     })
     public void delete(Long id) {
         User user = authenticationService.getCurrentUser();
         Operation operation = operationRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new NotFoundException("Operation Not Found"));
+
+        accountBalanceService.revertBalanceChange(operation);
+
         operationRepository.delete(operation);
     }
 }

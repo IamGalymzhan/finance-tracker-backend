@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.galymzhan.financetrackerbackend.entity.base.BaseEntityAudit;
+import org.galymzhan.financetrackerbackend.entity.base.BaseEntityAuditVersion;
 import org.galymzhan.financetrackerbackend.entity.enums.OperationType;
 
 import java.math.BigDecimal;
@@ -21,7 +21,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "operations")
-public class Operation extends BaseEntityAudit {
+public class Operation extends BaseEntityAuditVersion {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")

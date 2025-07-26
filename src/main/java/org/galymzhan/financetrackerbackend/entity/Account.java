@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.galymzhan.financetrackerbackend.entity.base.BaseEntityAudit;
+import org.galymzhan.financetrackerbackend.entity.base.BaseEntityAuditVersion;
 import org.galymzhan.financetrackerbackend.entity.enums.AccountType;
 
 import java.math.BigDecimal;
@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 @Table(name = "accounts", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_id", "name"})
 })
-public class Account extends BaseEntityAudit {
+public class Account extends BaseEntityAuditVersion {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")

@@ -21,4 +21,6 @@ public interface OperationRepository extends JpaRepository<Operation, Long>, Jpa
     List<Operation> findAllByUserAndDateBetween(User user, LocalDate startDate, LocalDate endDate);
 
     Optional<Operation> findByIdAndUser(Long id, User user);
+
+    List<Operation> findAllByIdInAndUser(List<Long> operationIds, User user);
 }

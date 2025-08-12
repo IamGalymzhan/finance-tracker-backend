@@ -2,19 +2,19 @@ package org.galymzhan.financetrackerbackend.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.galymzhan.financetrackerbackend.dto.filter.OperationFilterDto;
 import org.galymzhan.financetrackerbackend.dto.request.OperationRequestDto;
 import org.galymzhan.financetrackerbackend.dto.response.OperationResponseDto;
 import org.galymzhan.financetrackerbackend.entity.*;
+import org.galymzhan.financetrackerbackend.entity.rules.TaggingRule;
 import org.galymzhan.financetrackerbackend.exceptions.NotFoundException;
 import org.galymzhan.financetrackerbackend.mapper.OperationMapper;
 import org.galymzhan.financetrackerbackend.repository.AccountRepository;
 import org.galymzhan.financetrackerbackend.repository.CategoryRepository;
 import org.galymzhan.financetrackerbackend.repository.OperationRepository;
 import org.galymzhan.financetrackerbackend.repository.TagRepository;
-import org.galymzhan.financetrackerbackend.service.AccountBalanceService;
-import org.galymzhan.financetrackerbackend.service.AuthenticationService;
-import org.galymzhan.financetrackerbackend.service.OperationService;
+import org.galymzhan.financetrackerbackend.service.*;
 import org.galymzhan.financetrackerbackend.specification.OperationSpecification;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -28,13 +28,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OperationServiceImpl implements OperationService {
 
     private final OperationMapper operationMapper;
+
     private final AuthenticationService authenticationService;
     private final AccountBalanceService accountBalanceService;
+    private final RuleEngineService ruleEngineService;
+    private final TaggingRuleService taggingRuleService;
 
     private final OperationRepository operationRepository;
     private final AccountRepository accountRepository;
@@ -108,6 +112,8 @@ public class OperationServiceImpl implements OperationService {
 
         Operation savedOperation = operationRepository.save(operation);
 
+        applyTaggingRules(savedOperation);
+
         accountBalanceService.applyBalanceChange(savedOperation);
 
         return operationMapper.toResponseDto(savedOperation);
@@ -159,6 +165,8 @@ public class OperationServiceImpl implements OperationService {
         operationMapper.updateEntity(operation, operationRequestDto);
         Operation updatedOperation = operationRepository.save(operation);
 
+        applyTaggingRules(updatedOperation);
+
         accountBalanceService.applyBalanceChange(updatedOperation);
 
         return operationMapper.toResponseDto(updatedOperation);
@@ -181,5 +189,22 @@ public class OperationServiceImpl implements OperationService {
         accountBalanceService.revertBalanceChange(operation);
 
         operationRepository.delete(operation);
+    }
+
+    private void applyTaggingRules(Operation operation) {
+        try {
+            List<TaggingRule> rules = taggingRuleService.getUserRules();
+            if (!rules.isEmpty()) {
+                Set<Tag> autoTags = ruleEngineService.evaluateRules(operation, rules);
+
+                operation.getTags().addAll(autoTags);
+
+                if (!autoTags.isEmpty()) {
+                    operationRepository.save(operation);
+                }
+            }
+        } catch (Exception e) {
+            log.warn("Failed to apply tagging rules to operation {}: {}", operation.getId(), e.getMessage());
+        }
     }
 }

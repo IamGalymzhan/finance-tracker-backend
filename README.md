@@ -45,9 +45,9 @@ popular local banks — turning raw bank exports into categorized, editable fina
 - ✅ **Redis Caching** – Faster repeated queries for accounts and operations
 - ✅ **Interactive Swagger UI** – Test and explore the API from your browser
 - ✅ **Summary Endpoint** – Total spending/income grouped by category
-- 🚧 **Bank PDF Parser** – Automatically extract and import data from banking summaries
-- 🚧 **Background Tasks** – Process and categorize operations in the background
-- 🚧 **User Tagging Rules** – Auto-tag operations based on custom user preferences (e.g., if name contains "Uber" tag
+- ✅ **Bank PDF Parser** – Automatically extract and import data from banking summaries
+- ✅ **Background Tasks** – Process and categorize operations in the background
+- ✅ **User Tagging Rules** – Auto-tag operations based on custom user preferences (e.g., if name contains "Uber" tag
   as "Taxi")
 
 ---

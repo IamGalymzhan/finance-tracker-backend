@@ -12,6 +12,8 @@ RUN ./mvnw dependency:go-offline -B
 
 COPY src ./src
 
+RUN ./mvnw clean package -DskipTests -B
+
 EXPOSE 8080
 
-CMD ["./mvnw", "spring-boot:run"]
+CMD ["java", "-jar", "target/*.jar"]

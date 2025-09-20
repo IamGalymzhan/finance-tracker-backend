@@ -7,6 +7,7 @@ import org.galymzhan.financetrackerbackend.exceptions.ErrorCodeException;
 import org.galymzhan.financetrackerbackend.exceptions.NotFoundException;
 import org.galymzhan.financetrackerbackend.exceptions.UsernameAlreadyExistsException;
 import org.galymzhan.financetrackerbackend.util.ErrorCodeUtil;
+import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -90,6 +92,21 @@ public class GlobalExceptionHandler {
                 .errorCode(ErrorCodeUtil.VALIDATION_FAILED.getCode())
                 .message("Validation failed")
                 .details(Map.of("fieldErrors", fieldErrors))
+                .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<ExceptionDto> handleHandlerMethodValidationException(HandlerMethodValidationException ex, WebRequest request) {
+        log.warn("Handler method validation failed: {} | URI: {}", ex.getMessage(), request.getDescription(false));
+
+        ExceptionDto error = ExceptionDto.builder()
+                .errorCode(ErrorCodeUtil.VALIDATION_FAILED.getCode())
+                .message("Validation failed")
+                .details(Map.of("validationErrors", ex.getAllErrors().stream()
+                        .map(MessageSourceResolvable::getDefaultMessage)
+                        .toList()))
                 .build();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);

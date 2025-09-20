@@ -18,6 +18,8 @@ public interface OperationService {
 
     OperationResponseDto create(OperationRequestDto operationRequestDto);
 
+    void createBatch(List<OperationRequestDto> operationRequestDtos);
+
     OperationResponseDto update(Long id, OperationRequestDto operationRequestDto);
 
     void delete(Long id);

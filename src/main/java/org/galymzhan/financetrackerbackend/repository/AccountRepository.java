@@ -5,6 +5,7 @@ import org.galymzhan.financetrackerbackend.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,4 +14,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     List<Account> findAllByUser(User user);
 
     Optional<Account> findByIdAndUser(Long id, User user);
+
+    Collection<Account> findAllByIdInAndUser(List<Long> ids, User user);
 }

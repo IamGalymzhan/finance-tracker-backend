@@ -144,9 +144,8 @@ public class TaggingRuleServiceImpl implements TaggingRuleService {
     }
 
     @Override
-    @Cacheable(value = "user-active-tagging-rules", keyGenerator = "userAwareKeyGenerator")
-    public List<TaggingRule> getUserRules() {
-        User user = authenticationService.getCurrentUser();
+    @Cacheable(value = "user-active-tagging-rules", key = "#user.id")
+    public List<TaggingRule> getUserRules(User user) {
         return taggingRuleRepository.findAllByUserAndActiveTrue(user);
     }
 }

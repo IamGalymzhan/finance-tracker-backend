@@ -24,9 +24,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -39,6 +39,7 @@ public class OperationServiceImpl implements OperationService {
     private final AccountBalanceService accountBalanceService;
     private final RuleEngineService ruleEngineService;
     private final TaggingRuleService taggingRuleService;
+
 
     private final OperationRepository operationRepository;
     private final AccountRepository accountRepository;
@@ -128,6 +129,79 @@ public class OperationServiceImpl implements OperationService {
             @CacheEvict(value = "user-accounts", allEntries = true),
             @CacheEvict(value = "user-account-by-id", allEntries = true)
     })
+    public void createBatch(List<OperationRequestDto> operationRequestDtos) {
+        User user = authenticationService.getCurrentUser();
+
+        Set<Long> categoryIds = operationRequestDtos.stream()
+                .map(OperationRequestDto::getCategoryId)
+                .collect(Collectors.toSet());
+
+        Set<Long> accountInIds = operationRequestDtos.stream()
+                .map(OperationRequestDto::getAccountInId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        Set<Long> accountOutIds = operationRequestDtos.stream()
+                .map(OperationRequestDto::getAccountOutId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        Set<Long> tagIds = operationRequestDtos.stream()
+                .flatMap(dto -> Optional.ofNullable(dto.getTagIds()).orElse(Set.of()).stream())
+                .collect(Collectors.toSet());
+
+        Map<Long, Category> categories = categoryRepository.findAllByIdInAndUser(categoryIds, user)
+                .stream().collect(Collectors.toMap(Category::getId, c -> c));
+
+        Map<Long, Account> accounts = accountRepository.findAllByIdInAndUser(
+                Stream.concat(accountInIds.stream(), accountOutIds.stream()).toList(),
+                user
+        ).stream().collect(Collectors.toMap(Account::getId, a -> a));
+
+        Map<Long, Tag> tags = tagRepository.findAllByIdInAndUser(tagIds, user)
+                .stream().collect(Collectors.toMap(Tag::getId, t -> t));
+
+        List<Operation> operations = new ArrayList<>();
+        for (OperationRequestDto dto : operationRequestDtos) {
+            Operation operation = operationMapper.toEntity(dto);
+            operation.setUser(user);
+
+            operation.setCategory(categories.get(dto.getCategoryId()));
+
+            if (dto.getAccountInId() != null) {
+                operation.setAccountIn(accounts.get(dto.getAccountInId()));
+            }
+
+            if (dto.getAccountOutId() != null) {
+                operation.setAccountOut(accounts.get(dto.getAccountOutId()));
+            }
+
+            if (dto.getTagIds() != null && !dto.getTagIds().isEmpty()) {
+                Set<Tag> opTags = dto.getTagIds().stream()
+                        .map(tags::get)
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toSet());
+                operation.setTags(opTags);
+            }
+
+            operations.add(operation);
+        }
+
+        List<Operation> savedOperations = operationRepository.saveAll(operations);
+        for (Operation op : savedOperations) {
+            accountBalanceService.applyBalanceChange(op);
+        }
+    }
+
+    @Override
+    @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "user-operations", allEntries = true),
+            @CacheEvict(value = "user-operation-by-id", allEntries = true),
+            @CacheEvict(value = "user-reports", allEntries = true),
+            @CacheEvict(value = "user-accounts", allEntries = true),
+            @CacheEvict(value = "user-account-by-id", allEntries = true)
+    })
     public OperationResponseDto update(Long id, OperationRequestDto operationRequestDto) {
         User user = authenticationService.getCurrentUser();
         Operation operation = operationRepository.findByIdAndUser(id, user)
@@ -193,7 +267,8 @@ public class OperationServiceImpl implements OperationService {
 
     private void applyTaggingRules(Operation operation) {
         try {
-            List<TaggingRule> rules = taggingRuleService.getUserRules();
+            User user = authenticationService.getCurrentUser();
+            List<TaggingRule> rules = taggingRuleService.getUserRules(user);
             if (!rules.isEmpty()) {
                 Set<Tag> autoTags = ruleEngineService.evaluateRules(operation, rules);
 

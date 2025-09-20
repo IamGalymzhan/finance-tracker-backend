@@ -18,7 +18,6 @@ public class AccountBalanceServiceImpl implements AccountBalanceService {
     private final AccountRepository accountRepository;
 
     @Override
-    @Transactional
     public void applyBalanceChange(Operation operation) {
         BigDecimal amount = operation.getAmount();
         OperationType type = operation.getOperationType();

@@ -40,7 +40,7 @@ public class BackgroundTaggingServiceImpl implements BackgroundTaggingService {
     @Async("taggingExecutor")
     public CompletableFuture<TaggingResult> processOperationsInBackground(User user, List<Long> operationIds) {
         try {
-            List<TaggingRule> rules = taggingRuleService.getUserRules();
+            List<TaggingRule> rules = taggingRuleService.getUserRules(user);
             if (rules.isEmpty()) {
                 return CompletableFuture.completedFuture(TaggingResult.noRules());
             }
@@ -98,7 +98,7 @@ public class BackgroundTaggingServiceImpl implements BackgroundTaggingService {
     public CompletableFuture<Void> reapplyAllRules(User user) {
 
         try {
-            List<TaggingRule> rules = taggingRuleService.getUserRules();
+            List<TaggingRule> rules = taggingRuleService.getUserRules(user);
             if (rules.isEmpty()) {
                 return CompletableFuture.completedFuture(null);
             }

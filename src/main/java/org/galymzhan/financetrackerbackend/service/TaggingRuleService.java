@@ -2,6 +2,7 @@ package org.galymzhan.financetrackerbackend.service;
 
 import org.galymzhan.financetrackerbackend.dto.request.TaggingRuleRequestDto;
 import org.galymzhan.financetrackerbackend.dto.response.TaggingRuleResponseDto;
+import org.galymzhan.financetrackerbackend.entity.User;
 import org.galymzhan.financetrackerbackend.entity.rules.TaggingRule;
 
 import java.util.List;
@@ -18,5 +19,5 @@ public interface TaggingRuleService {
 
     void delete(Long id);
 
-    List<TaggingRule> getUserRules();
+    List<TaggingRule> getUserRules(User user);
 }

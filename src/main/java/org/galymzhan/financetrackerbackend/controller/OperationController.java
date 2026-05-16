@@ -168,9 +168,10 @@ public class OperationController {
     public ResponseEntity<List<ParsedOperationResponseDto>> importOperationsFromStatement(
             @RequestParam("file") MultipartFile file,
             @RequestParam("bankType") BankType bankType,
-            @RequestParam("accountId") Long accountId
+            @RequestParam("accountId") Long accountId,
+            @RequestParam(value = "includeInternalTransfers", defaultValue = "false") boolean includeInternalTransfers
     ) throws IOException {
-        List<ParsedOperationResponseDto> result = bankStatementParseService.parseStatement(file, bankType, accountId);
+        List<ParsedOperationResponseDto> result = bankStatementParseService.parseStatement(file, bankType, accountId, includeInternalTransfers);
         return ResponseEntity.ok(result);
     }
 }

@@ -8,5 +8,5 @@ import java.io.IOException;
 import java.util.List;
 
 public interface BankStatementParseService {
-    List<ParsedOperationResponseDto> parseStatement(MultipartFile file, BankType bankType, Long accountId) throws IOException;
+    List<ParsedOperationResponseDto> parseStatement(MultipartFile file, BankType bankType, Long accountId, boolean includeInternalTransfers) throws IOException;
 }

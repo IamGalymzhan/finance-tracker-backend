@@ -11,5 +11,5 @@ public interface BankStatementParser {
 
     BankType getSupportedBankType();
 
-    List<ParsedOperationResponseDto> parseStatement(MultipartFile file, Long accountId) throws IOException;
+    List<ParsedOperationResponseDto> parseStatement(MultipartFile file, Long accountId, boolean includeInternalTransfers) throws IOException;
 }

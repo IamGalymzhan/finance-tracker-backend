@@ -32,12 +32,12 @@ public class BankStatementParseServiceImpl implements BankStatementParseService 
     }
 
     @Override
-    public List<ParsedOperationResponseDto> parseStatement(MultipartFile file, BankType bankType, Long accountId) throws IOException {
+    public List<ParsedOperationResponseDto> parseStatement(MultipartFile file, BankType bankType, Long accountId, boolean includeInternalTransfers) throws IOException {
         BankStatementParser parser = parsers.get(bankType);
         if (parser == null) {
             throw new IllegalArgumentException("Unsupported bank type: " + bankType);
         }
 
-        return parser.parseStatement(file, accountId);
+        return parser.parseStatement(file, accountId, includeInternalTransfers);
     }
 }
